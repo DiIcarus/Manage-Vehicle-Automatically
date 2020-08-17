@@ -1,10 +1,11 @@
 import React from 'react';
 import './App.css';
-
-function App() {
+import Header from './components/AppBar'
+const App:React.FC = () => {
   return (
-    <div className="App">
-    </div>
+    <React.Fragment>
+      <Header/>
+    </React.Fragment>
   );
 }
 
