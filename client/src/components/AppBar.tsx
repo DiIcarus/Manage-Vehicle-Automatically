@@ -34,7 +34,10 @@ const useStyle = makeStyles((theme:Theme)=>createStyles({
     margin: '0 auto',
   },
   app_bar:{
-    backgroundColor:theme.palette.background.paper
+    backgroundColor:theme.palette.background.paper,
+    boxShadow:"none",
+    border:`0 solid ${theme.palette.divider}`,
+
   },
   user_info:{
     color:theme.palette.text.primary,

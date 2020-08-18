@@ -3,9 +3,14 @@ sys.path.append(os.path.abspath('.'))
 
 from flask import Flask
 from flask_cors import CORS
-from flask_restful import Resource,Api
+from flask_restful import Resource,Api, request
 from flask_mail import Mail, Message
 from flask_jwt_extended import JWTManager
+import json
+from json2xml import json2xml
+from json2xml.utils import readfromurl, readfromstring, readfromjson
+from helper.img import bit642NumpyImg
+import cv2
 
 from resource.register import ApiRegister
 mail_setting = {
@@ -22,7 +27,13 @@ def api_add_resource():
   global api
   class HelloWord(Resource):
     def get(self):
-      return {'Hello':"world"}
+      x = {
+        "name": "John",
+        "age": 30,
+        "city": "New York"
+      }
+      return x
+      # return json2xml.Json2xml(readfromstring('{"Hello":"world"}')).to_xml()
   class SendGmail(Resource):
     def get(self,email):
       global mail
@@ -36,9 +47,22 @@ def api_add_resource():
       mail.send(message)
       return "mail is send"
   
+  class Demo(Resource):
+    def post(self):
+      byte = request.get_data().decode('utf-8')
+      json_demo = json.loads(byte)
+      # print(json_demo["base64"])
+      cv2.imshow("demo",bit642NumpyImg(json_demo["base64"]))
+      cv2.waitKey(0)
+      #using for c#x
+
+    def get(self):
+      return {"test":"tetss"}
+
   api.add_resource(HelloWord,'/',)
   api.add_resource(SendGmail,'/<string:email>')
   api.add_resource(ApiRegister,'/register')
+  api.add_resource(Demo,'/testme')
   
 def main():
   global app

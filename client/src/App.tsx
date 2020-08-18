@@ -2,13 +2,26 @@ import React from 'react';
 import './App.css';
 import Header from './components/AppBar';
 import DrawerFeature from './components/DrawerFeature';
-import {CssBaseline} from '@material-ui/core';
+import TableInfo from './components/TableInfo';
+import SignIn from './components/SignIn';
+import Register from './components/Register';
+import Chart from './components/Chart';
+import {CssBaseline, Grid} from '@material-ui/core';
 const App:React.FC = () => {
   return (
     <React.Fragment>
+      {/* <div> */}
+        {/* <SignIn/> */}
+        {/* <Register/>
+      </div> */}
+      
       <CssBaseline />
       <Header/>
-      <DrawerFeature />
+      <Grid>
+        {/* <DrawerFeature /> */}
+        <TableInfo/>
+        <Chart/>
+      </Grid>
     </React.Fragment>
   );
 }
