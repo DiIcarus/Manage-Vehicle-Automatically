@@ -5,14 +5,16 @@ from flask import Flask
 from flask_cors import CORS
 from flask_restful import Resource,Api, request
 from flask_mail import Mail, Message
-from flask_jwt_extended import JWTManager
+from flask_jwt_extended import JWTManager,jwt_required
 import json
 from json2xml import json2xml
 from json2xml.utils import readfromurl, readfromstring, readfromjson
 from helper.img import bit642NumpyImg
 import cv2
 
+from resource.sign_in import ApiSignIn
 from resource.register import ApiRegister
+
 mail_setting = {
   "MAIL_SERVER": 'smtp.gmail.com',
   "MAIL_PORT": 465,
@@ -25,7 +27,9 @@ mail_setting = {
 
 def api_add_resource():
   global api
+  
   class HelloWord(Resource):
+    @jwt_required
     def get(self):
       x = {
         "name": "John",
@@ -63,6 +67,7 @@ def api_add_resource():
   api.add_resource(SendGmail,'/<string:email>')
   api.add_resource(ApiRegister,'/register')
   api.add_resource(Demo,'/testme')
+  api.add_resource(ApiSignIn,'/login')
   
 def main():
   global app
@@ -75,8 +80,8 @@ def main():
   app.config.update(mail_setting)
 
   app.config['JWT_SECRET_KEY'] = 'JWT_SECRET_KEY'
-
   jwt = JWTManager(app)
+  
   mail = Mail(app)
   app.run(port=5000)
   
