@@ -1,3 +1,4 @@
+from uuid import uuid4
 from helper.db import dbhelper as db
 def createArrayFromReturnCursor(cursor):
   arr = []
@@ -125,8 +126,8 @@ def insertVehicle(id_vehicles="",id_owner=""):
 
 def insertTicket(vehicle_id="",date=""):
   querystr = (
-    "INSERT INTO ticket"
-    "(vehicle_id, data)"
+    "INSERT INTO tickets"
+    "(vehicle_id, date)"
     "values(%s,%s)"
   )
   data = (vehicle_id, date)
@@ -137,3 +138,30 @@ def insertTicket(vehicle_id="",date=""):
     data=data
   )
   db.disconnect(cnx)
+def Register(dob,name,gmail,phone_number,password,id_vehicles):
+  id_users = str(uuid4()).split('-')[0]
+  id_owners = str(uuid4()).split('-')[0]
+  private_code = str(uuid4()).split('-')[0]
+  public_code = str(uuid4()).split('-')[0]
+  try:
+    insertUser(
+      id_users=id_users,
+      gmail=gmail,
+      phone_number=phone_number,
+      dob=dob,
+      password=password,
+      name=name
+    )
+    insertOwner(
+      id_owners=id_owners,
+      user_id=id_users,
+      private_code=private_code,
+      public_code=public_code
+    )
+    insertVehicle(
+      id_vehicles=id_vehicles,
+      id_owner=id_owners
+    )
+    return True
+  except:
+    return False

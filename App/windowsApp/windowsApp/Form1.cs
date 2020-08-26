@@ -19,6 +19,7 @@ namespace windowsApp
         private FilterInfoCollection cameras;
         private VideoCaptureDevice cam;
         private Bitmap img;
+        private string token;
 
         public Form1()
         {
@@ -54,10 +55,12 @@ namespace windowsApp
             {
                 base64 = Base64,
             };
+
             string json = new JavaScriptSerializer().Serialize(obj);
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:5000/testme");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
+            httpWebRequest.Headers.Add("Authorization", "Bearer " + this.token);
 
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {

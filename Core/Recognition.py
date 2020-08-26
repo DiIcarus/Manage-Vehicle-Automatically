@@ -44,6 +44,9 @@ CLASSES_LABEL = { 1:'0',
         }
 
 def identify_character(image):
+    kernel = np.ones((5,5),np.uint8)
+    image = cv2.erode(image,kernel,iterations = 1)
+
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = Image.fromarray(image).convert('RGB').resize((30,30))
     image = np.expand_dims(image, axis=0)

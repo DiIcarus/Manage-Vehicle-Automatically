@@ -3,7 +3,7 @@ from helper.db import qlnx as db
 from uuid import uuid4
 import datetime
 from flask_mail import Mail, Message
-
+from flask_jwt_extended import jwt_required
 
 
 def splitTime(time):
@@ -47,14 +47,14 @@ def check_vehicle_ticket_available(id_vehicle):
   else:
     if isDateOnMonth(data.date):
       return {status:True,message:"ticket is available"}
-    else
+    else:
       return {status:True,message:"ticket is out of month"}
 
 def getEmailOwnerFromId(vehicle_id):
   result = db.selectTable("SELECT gmail FROM users WHERE id_users=(SELECT user_id FROM Owners WHERE id_owners=(SELECT id_owner FROM vehicle WHERE id_vehicles=${vehicle_id}))")
   return result
 
-class ApiCheckOutVehicleID:
+class ApiCheckOutVehicleID(Resource):
   def post(self):
     '''
       Using to detect data(vehicle_id, ticket)
@@ -66,7 +66,7 @@ class ApiCheckOutVehicleID:
         "code":201,
         "data":{
           "exist":False,
-          "ticket_available":check_id_vehicle.status
+          "ticket_available":check_id_vehicle.status,
           "message": check_id_vehicle.message
         }
       }
@@ -90,11 +90,11 @@ class ApiCheckOutVehicleID:
             "message":check_ticket.message
           }
         }
-class ApiCheckOutClientSendSMS:
-  pass
-class ApiCheckOutBotSendSMS:
-  pass
-class ApiCheckOutBotSendCodeMail:
+# class ApiCheckOutClientSendSMS:
+#   pass
+# class ApiCheckOutBotSendSMS:
+#   pass
+class ApiCheckOutBotSendCodeMail(Resource):
   def __init__(self,app,mail):
     self.app = app
     self.mail = mail
@@ -106,7 +106,7 @@ class ApiCheckOutBotSendCodeMail:
         sender=self.app.config.get("MAIL_USERNAME"),
         recipients=[email],
         body="Flask QLNX send mail 1234"
-      )
+    )
     self.mail.send(message)
     return {
       "data":{
@@ -115,6 +115,7 @@ class ApiCheckOutBotSendCodeMail:
       }
     }
     return 200
+
 def validateCheckout(private_key,public_key,send_code,own_send_code, vehicle_id,user_id,owner_id):
   '''
     check own_send_code => owner checked 
@@ -126,7 +127,7 @@ def validateCheckout(private_key,public_key,send_code,own_send_code, vehicle_id,
   '''
   if len(owner_id)!=0:
     return {
-      code:1
+      code:1,
       check_out_type:"owner_id",
     }
   #check public,private key
@@ -137,9 +138,10 @@ def validateCheckout(private_key,public_key,send_code,own_send_code, vehicle_id,
     return user_id, private_code,public_code
   if len(private_key)!=0 and len(public_key)!=0:
     _user_id, _private_code, _public_code = getOwnerKeyFromVehicle(vehicle_id=vehicle_id)
-    if(user_id==_user_id) and private_key==_private_code and public_key = _public_code:
+    if(user_id==_user_id) and private_key==_private_code and public_key == _public_code:
       return True
-    else False
+    else: 
+      return False
   #check public_key + send_code
   if len(public_key)!=0 and len(send_code)!=0:
     pass
@@ -148,7 +150,8 @@ def validateCheckout(private_key,public_key,send_code,own_send_code, vehicle_id,
   
 
 
-class ApiCheckoutIncomeKey:
+class ApiCheckoutIncomeKey(Resource):
+  # @jwt_required
   def post(seft):
     vehicle_id = request.form['vehicle_id']
     user_id = request.form['user_id']

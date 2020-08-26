@@ -11,10 +11,19 @@ from json2xml import json2xml
 from json2xml.utils import readfromurl, readfromstring, readfromjson
 from helper.img import bit642NumpyImg
 import cv2
+import numpy as np
 
-from resource.sign_in import ApiSignIn
+import resource
+from resource.check_out import ApiCheckOutVehicleID, ApiCheckOutBotSendCodeMail,ApiCheckoutIncomeKey
+from resource.sign_in import ApiSignIn, ApiGetInfoUser
 from resource.register import ApiRegister
+from resource.register_month_ticket import ApiRegisterMonthTicket
+from lib.detector import detect_character
+from lib.recognition import identify_character
 
+from lib.predict_class import NeuralNetwork
+import tensorflow as tf
+from tensorflow.python.keras.backend import set_session
 mail_setting = {
   "MAIL_SERVER": 'smtp.gmail.com',
   "MAIL_PORT": 465,
@@ -56,18 +65,56 @@ def api_add_resource():
       byte = request.get_data().decode('utf-8')
       json_demo = json.loads(byte)
       # print(json_demo["base64"])
-      cv2.imshow("demo",bit642NumpyImg(json_demo["base64"]))
-      cv2.waitKey(0)
-      #using for c#x
+
+      img=bit642NumpyImg(json_demo["base64"])
+      # cv2.imwrite("demo.jpg",img)
+
+      # try:
+      # im_test = cv2.imread('./Core/demo/vietnam_car_rectangle_plate.jpg')
+      # # cv2.imshow("test",img)
+      
+      # images = detect_character(im_test)
+      # result = []
+      # for im in images:
+      #   result.append(identify_character(im))
+      # print(result)
+      session = tf.compat.v1.Session()
+      graph = tf.compat.v1.get_default_graph()
+      set_session(session)
+      ai = NeuralNetwork(session,graph)
+      try:
+        ai.predict(img)
+        return{
+          "status":200,
+          "message":"my sign"
+        }
+      except:
+      # cv2.waitKey(1000)
+      # cv2.destroyAllWindows()
+        return {
+          "asd":"kajsdhf",
+          "asdaaa":123
+        }
+      # except:
+      #   return {
+      #     "asd":"none",
+      #     "asdaaa":123
+      #   }
 
     def get(self):
       return {"test":"tetss"}
 
   api.add_resource(HelloWord,'/',)
   api.add_resource(SendGmail,'/<string:email>')
-  api.add_resource(ApiRegister,'/register')
   api.add_resource(Demo,'/testme')
+  #demo
+  api.add_resource(ApiRegister,'/register')
   api.add_resource(ApiSignIn,'/login')
+  api.add_resource(ApiGetInfoUser,'/info/<string:id_user>')
+  api.add_resource(ApiRegisterMonthTicket,'/register-ticket')
+  api.add_resource(ApiCheckOutVehicleID,'/check-out-vehicle')
+  api.add_resource(ApiCheckOutBotSendCodeMail,'/check-out-bot-send-mail')
+  api.add_resource(ApiCheckoutIncomeKey,'/check-out-by-key')
   
 def main():
   global app
@@ -81,9 +128,16 @@ def main():
 
   app.config['JWT_SECRET_KEY'] = 'JWT_SECRET_KEY'
   jwt = JWTManager(app)
-  
   mail = Mail(app)
   app.run(port=5000)
   
 if __name__=="__main__":
   main()
+  # im_test = cv2.imread('./Core/demo/vietnam_car_rectangle_plate.jpg')
+  # # cv2.imshow("test",img)
+  
+  # images = detect_character(im_test)
+  # result = []
+  # for im in images:
+  #   result.append(identify_character(im))
+  # print(result)

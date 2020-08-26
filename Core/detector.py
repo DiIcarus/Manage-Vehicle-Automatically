@@ -69,11 +69,56 @@ def get_images_character(cont,test_roi,thre_mor):
     boundingBoxes = [cv2.boundingRect(c) for c in cnts]
     (cnts, boundingBoxes) = zip(*sorted(zip(cnts, boundingBoxes),
                       key=lambda b: b[1][i], reverse=reverse))
-    return cnts
+    # print(cnts)
+    # filter
+    count = 0
+    cnt_rect_arr = []
+    filter_arr = []
+    average_h = 0;
+    for c in cnts:
+      br = cv2.boundingRect(c)
+      # print(br)
+      cnt_rect_arr.append(br)
+    #sort byy y
+    def takeSecond(elem):
+      return elem[3]
+    cnt_rect_arr.sort(key=takeSecond)
+    # print("aa",cnt_rect_arr)
+    #filter by height
+    filter_10 = []
+    for c in cnt_rect_arr:
+      if (c[3]<150 and c[3]>40):
+        filter_10.append(c)
+    # print("bb",filter_10)
+    #sort x,y
+    rows1 = []
+    rows2= []
+    for c in filter_10:
+      if(rows1==[]):
+        rows1.append(c)
+      else:
+        if c[1]<(rows1[0][1]+10) and c[1] > (rows1[0][1]-10):
+          rows1.append(c)
+        elif (rows2==[]):
+          rows2.append(c)
+        elif (c[1]<rows2[0][1]+10 and c[1] > rows2[0][1]-10):
+          rows2.append(c)
+    # print("R1",rows1)
+    # print("R2",rows2)
+    #sort x
+    def takeX(elem):
+      return elem[0]
+    rows1.sort(key=takeX)
+    rows2.sort(key=takeX)
+    # print("R1s",rows1)
+    # print("R2s",rows2)
+    # print("Done",rows1+rows2)
+
+    return rows1+rows2
   
   def sort_bounding_rect(cont):
     (x, y, w, h) = cv2.boundingRect(cont)
-    print(x, y, w, h)
+    # print(x, y, w, h)
     '''
       short by x, y, w, h
       pop what unable plate
@@ -86,7 +131,8 @@ def get_images_character(cont,test_roi,thre_mor):
   crop_characters = []
   digit_w, digit_h = 30, 60
   for c in sort_contours(cont):
-    x, y, w, h = sort_bounding_rect(c)
+    # x, y, w, h = sort_bounding_rect(c)
+    x,y,w,h = c
     ratio = h/w
     if 1<= ratio <=4.5:
       cv2.rectangle(test_roi, (x, y), (x + w, y + h), (0, 255,0), 2)
