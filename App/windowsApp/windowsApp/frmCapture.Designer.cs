@@ -30,7 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rdCheckOut = new System.Windows.Forms.RadioButton();
             this.cbxCamera = new System.Windows.Forms.ComboBox();
+            this.rdCheckIn = new System.Windows.Forms.RadioButton();
+            this.radioGroup1 = new DevExpress.XtraEditors.RadioGroup();
             this.txtCurrentTime = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -41,23 +44,20 @@
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.timerRequest = new System.Windows.Forms.Timer(this.components);
             this.pictureBox = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lb3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.radioGroup1 = new DevExpress.XtraEditors.RadioGroup();
-            this.rdCheckIn = new System.Windows.Forms.RadioButton();
-            this.rdCheckOut = new System.Windows.Forms.RadioButton();
+            this.txtVehicleId = new System.Windows.Forms.TextBox();
+            this.txtOwnerName = new System.Windows.Forms.TextBox();
+            this.txtEmail = new System.Windows.Forms.TextBox();
+            this.txtPhoneNumber = new System.Windows.Forms.TextBox();
+            this.txtTicketAvailable = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.radioGroup1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -79,6 +79,18 @@
             this.panel1.Size = new System.Drawing.Size(775, 71);
             this.panel1.TabIndex = 0;
             // 
+            // rdCheckOut
+            // 
+            this.rdCheckOut.AutoSize = true;
+            this.rdCheckOut.Location = new System.Drawing.Point(428, 41);
+            this.rdCheckOut.Name = "rdCheckOut";
+            this.rdCheckOut.Size = new System.Drawing.Size(75, 17);
+            this.rdCheckOut.TabIndex = 17;
+            this.rdCheckOut.TabStop = true;
+            this.rdCheckOut.Text = "Check Out";
+            this.rdCheckOut.UseVisualStyleBackColor = true;
+            this.rdCheckOut.CheckedChanged += new System.EventHandler(this.rdCheckOut_CheckedChanged);
+            // 
             // cbxCamera
             // 
             this.cbxCamera.FormattingEnabled = true;
@@ -86,6 +98,25 @@
             this.cbxCamera.Name = "cbxCamera";
             this.cbxCamera.Size = new System.Drawing.Size(121, 21);
             this.cbxCamera.TabIndex = 7;
+            // 
+            // rdCheckIn
+            // 
+            this.rdCheckIn.AutoSize = true;
+            this.rdCheckIn.Location = new System.Drawing.Point(428, 19);
+            this.rdCheckIn.Name = "rdCheckIn";
+            this.rdCheckIn.Size = new System.Drawing.Size(67, 17);
+            this.rdCheckIn.TabIndex = 14;
+            this.rdCheckIn.TabStop = true;
+            this.rdCheckIn.Text = "Check In";
+            this.rdCheckIn.UseVisualStyleBackColor = true;
+            this.rdCheckIn.CheckedChanged += new System.EventHandler(this.rdCheckIn_CheckedChanged);
+            // 
+            // radioGroup1
+            // 
+            this.radioGroup1.Location = new System.Drawing.Point(415, 12);
+            this.radioGroup1.Name = "radioGroup1";
+            this.radioGroup1.Size = new System.Drawing.Size(104, 53);
+            this.radioGroup1.TabIndex = 13;
             // 
             // txtCurrentTime
             // 
@@ -171,14 +202,14 @@
             this.pictureBox.TabIndex = 1;
             this.pictureBox.TabStop = false;
             // 
-            // label3
+            // lb3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(529, 89);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "label3";
+            this.lb3.AutoSize = true;
+            this.lb3.Location = new System.Drawing.Point(529, 89);
+            this.lb3.Name = "lb3";
+            this.lb3.Size = new System.Drawing.Size(34, 13);
+            this.lb3.TabIndex = 2;
+            this.lb3.Text = "Detail";
             // 
             // label4
             // 
@@ -225,88 +256,57 @@
             this.label8.TabIndex = 7;
             this.label8.Text = "Ticket Available:";
             // 
-            // textBox2
+            // txtVehicleId
             // 
-            this.textBox2.Location = new System.Drawing.Point(609, 133);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 21);
-            this.textBox2.TabIndex = 8;
+            this.txtVehicleId.Location = new System.Drawing.Point(609, 133);
+            this.txtVehicleId.Name = "txtVehicleId";
+            this.txtVehicleId.Size = new System.Drawing.Size(100, 21);
+            this.txtVehicleId.TabIndex = 8;
             // 
-            // textBox3
+            // txtOwnerName
             // 
-            this.textBox3.Location = new System.Drawing.Point(609, 158);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 21);
-            this.textBox3.TabIndex = 9;
+            this.txtOwnerName.Location = new System.Drawing.Point(609, 158);
+            this.txtOwnerName.Name = "txtOwnerName";
+            this.txtOwnerName.Size = new System.Drawing.Size(100, 21);
+            this.txtOwnerName.TabIndex = 9;
             // 
-            // textBox4
+            // txtEmail
             // 
-            this.textBox4.Location = new System.Drawing.Point(609, 185);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 21);
-            this.textBox4.TabIndex = 10;
+            this.txtEmail.Location = new System.Drawing.Point(609, 185);
+            this.txtEmail.Name = "txtEmail";
+            this.txtEmail.Size = new System.Drawing.Size(100, 21);
+            this.txtEmail.TabIndex = 10;
             // 
-            // textBox5
+            // txtPhoneNumber
             // 
-            this.textBox5.Location = new System.Drawing.Point(609, 208);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 21);
-            this.textBox5.TabIndex = 11;
+            this.txtPhoneNumber.Location = new System.Drawing.Point(609, 208);
+            this.txtPhoneNumber.Name = "txtPhoneNumber";
+            this.txtPhoneNumber.Size = new System.Drawing.Size(100, 21);
+            this.txtPhoneNumber.TabIndex = 11;
             // 
-            // textBox6
+            // txtTicketAvailable
             // 
-            this.textBox6.Location = new System.Drawing.Point(609, 231);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 21);
-            this.textBox6.TabIndex = 12;
-            // 
-            // radioGroup1
-            // 
-            this.radioGroup1.Location = new System.Drawing.Point(415, 12);
-            this.radioGroup1.Name = "radioGroup1";
-            this.radioGroup1.Size = new System.Drawing.Size(104, 53);
-            this.radioGroup1.TabIndex = 13;
-            // 
-            // rdCheckIn
-            // 
-            this.rdCheckIn.AutoSize = true;
-            this.rdCheckIn.Location = new System.Drawing.Point(428, 19);
-            this.rdCheckIn.Name = "rdCheckIn";
-            this.rdCheckIn.Size = new System.Drawing.Size(67, 17);
-            this.rdCheckIn.TabIndex = 14;
-            this.rdCheckIn.TabStop = true;
-            this.rdCheckIn.Text = "Check In";
-            this.rdCheckIn.UseVisualStyleBackColor = true;
-            this.rdCheckIn.CheckedChanged += new System.EventHandler(this.rdCheckIn_CheckedChanged);
-            // 
-            // rdCheckOut
-            // 
-            this.rdCheckOut.AutoSize = true;
-            this.rdCheckOut.Location = new System.Drawing.Point(428, 41);
-            this.rdCheckOut.Name = "rdCheckOut";
-            this.rdCheckOut.Size = new System.Drawing.Size(75, 17);
-            this.rdCheckOut.TabIndex = 17;
-            this.rdCheckOut.TabStop = true;
-            this.rdCheckOut.Text = "Check Out";
-            this.rdCheckOut.UseVisualStyleBackColor = true;
-            this.rdCheckOut.CheckedChanged += new System.EventHandler(this.rdCheckOut_CheckedChanged);
+            this.txtTicketAvailable.Location = new System.Drawing.Point(609, 231);
+            this.txtTicketAvailable.Name = "txtTicketAvailable";
+            this.txtTicketAvailable.Size = new System.Drawing.Size(100, 21);
+            this.txtTicketAvailable.TabIndex = 12;
             // 
             // frmCapture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(775, 437);
-            this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.txtTicketAvailable);
+            this.Controls.Add(this.txtPhoneNumber);
+            this.Controls.Add(this.txtEmail);
+            this.Controls.Add(this.txtOwnerName);
+            this.Controls.Add(this.txtVehicleId);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.lb3);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.panel1);
             this.Name = "frmCapture";
@@ -314,8 +314,8 @@
             this.Load += new System.EventHandler(this.frmCapture_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.radioGroup1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -335,17 +335,17 @@
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Timer timerRequest;
         private System.Windows.Forms.PictureBox pictureBox;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lb3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox txtVehicleId;
+        private System.Windows.Forms.TextBox txtOwnerName;
+        private System.Windows.Forms.TextBox txtEmail;
+        private System.Windows.Forms.TextBox txtPhoneNumber;
+        private System.Windows.Forms.TextBox txtTicketAvailable;
         private DevExpress.XtraEditors.RadioGroup radioGroup1;
         private System.Windows.Forms.RadioButton rdCheckIn;
         private System.Windows.Forms.RadioButton rdCheckOut;

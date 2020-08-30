@@ -126,7 +126,12 @@ namespace windowsApp
         {
             setOnloadState();
         }
-
+        public class Student
+        {
+            public int Id;
+            public string Name;
+            public string Address;
+        }
         bool checkToken()
         {
             if (Program.access_token.Length == 0)
@@ -145,6 +150,40 @@ namespace windowsApp
             //
             if (!checkToken()) frmOnClose();
             setOnloadState();
+            Student[] students = {
+                    new Student { Id = 1, Name = "Joe Rattz"            ,Address="Sriram Apartments"},
+                    new Student { Id = 6, Name = "Ulyses Hutchens"      ,Address="Sriram Apartments"},
+                    new Student { Id = 19, Name = "Bob Tanko"           ,Address="Sriram Apartments"},
+                    new Student { Id = 45, Name = "Erin Doutensal"      ,Address="Sriram Apartments"},
+                    new Student { Id = 1, Name = "Joe Rattz"            ,Address="Sriram Apartments"},
+                    new Student { Id = 12, Name = "Bob Mapplethorpe"    ,Address="Sriram Apartments"},
+                    new Student { Id = 17, Name = "Anthony Adams"       ,Address="Sriram Apartments"},
+                    new Student { Id = 32, Name = "Dignan Stephens Mark",Address="Sriram Apartments"},
+                    new Student { Id = 1232, Name = "Dignan Stephens"   ,Address="Sriram Apartments Henry Labamba Beligi"},
+                    new Student { Id = 132, Name = "Neha Dhupia"        ,Address="Sriram Apartments 123456"},
+                    new Student { Id = 132, Name = ""                   ,Address="Sriram Apartments 123456"},
+                    new Student { Id = 133, Name = ""                   ,Address="Sriram Apartments 123456"},
+                    new Student { Id = 134, Name = "Neha Dhupia"        ,Address=""},
+                    new Student { Id = 134, Name = "Shradha Kapoor"     ,Address="Mumbai"}
+                };
+            DataTable dt = new DataTable("MyDataTable");
+            dt.Columns.Add("MyColumn");
+            dt.Columns.Add("MyColumn1");
+            dt.Columns.Add("MyColumn2");
+            Type type = typeof(Student);
+            int a = type.GetProperties().Count();
+            MessageBox.Show(Convert.ToString(a));
+            foreach (Student value in students)
+            {
+                DataRow row = dt.NewRow();
+                row[0] = value.Id;
+                row[1] = value.Name;
+                row[2] = value.Address;
+                dt.Rows.Add(row);
+            }
+            //dataGridView.DataSource = dt;
+            gridControl.DataSource = dt;
+            txtVehicleId.Text = gridView.GetSelectedRows().ToString();
         }
 
         private void btnInsert_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -159,7 +198,7 @@ namespace windowsApp
 
         private void btnDelete_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-
+            txtVehicleId.Text = gridView.GetDataRow(gridView.GetSelectedRows()[0])[1].ToString();
         }
 
         private void btnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -188,7 +227,7 @@ namespace windowsApp
 
         private void btnRegisterTicket_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            txtVehicleId.Text = "98A212354";
+            //txtVehicleId.Text = "98A212354";
             string vehicle_id = txtVehicleId.Text.Trim();
             string duration_time = Program.DURATION_TIME_REGISTER.ToString().Trim();
             PostServer api = new PostServer(vehicle_id, duration_time);

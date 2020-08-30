@@ -14,6 +14,7 @@ using System.Net.Http.Headers;
 using System.Web.Script.Serialization;
 using System.Net;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace windowsApp
 {
@@ -23,7 +24,18 @@ namespace windowsApp
         {
             InitializeComponent();
         }
-
+        public class Student
+        {
+            public int Id;
+            public string Name;
+            public string Address;
+        }
+        public class Responnse
+        {
+            public string[] name;
+            public int age;
+            public string city;
+        }
         private async void button1_Click(object sender, EventArgs e)
         {
             var obj = new Lad
@@ -38,7 +50,7 @@ namespace windowsApp
                 }
             };
             string json = new JavaScriptSerializer().Serialize(obj);
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:5000/testme");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:5000/gmail");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
@@ -51,6 +63,41 @@ namespace windowsApp
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 var result = streamReader.ReadToEnd();
+                Responnse response = JsonConvert.DeserializeObject<Responnse>(result);
+
+                Student[] students = {
+                    new Student { Id = 1, Name = "Joe Rattz"            ,Address="Sriram Apartments"},
+                    new Student { Id = 6, Name = "Ulyses Hutchens"      ,Address="Sriram Apartments"},
+                    new Student { Id = 19, Name = "Bob Tanko"           ,Address="Sriram Apartments"},
+                    new Student { Id = 45, Name = "Erin Doutensal"      ,Address="Sriram Apartments"},
+                    new Student { Id = 1, Name = "Joe Rattz"            ,Address="Sriram Apartments"},
+                    new Student { Id = 12, Name = "Bob Mapplethorpe"    ,Address="Sriram Apartments"},
+                    new Student { Id = 17, Name = "Anthony Adams"       ,Address="Sriram Apartments"},
+                    new Student { Id = 32, Name = "Dignan Stephens Mark",Address="Sriram Apartments"},
+                    new Student { Id = 1232, Name = "Dignan Stephens"   ,Address="Sriram Apartments Henry Labamba Beligi"},
+                    new Student { Id = 132, Name = "Neha Dhupia"        ,Address="Sriram Apartments 123456"},
+                    new Student { Id = 132, Name = ""                   ,Address="Sriram Apartments 123456"},
+                    new Student { Id = 133, Name = ""                   ,Address="Sriram Apartments 123456"},
+                    new Student { Id = 134, Name = "Neha Dhupia"        ,Address=""},
+                    new Student { Id = 134, Name = "Shradha Kapoor"     ,Address="Mumbai"}
+                };
+                DataTable dt = new DataTable("MyDataTable");
+                string[] data = response.name;
+                dt.Columns.Add("MyColumn");
+                dt.Columns.Add("MyColumn1");
+                dt.Columns.Add("MyColumn2");
+                Type type = typeof(Student);
+                int a = type.GetProperties().Count();
+                MessageBox.Show(Convert.ToString(a));
+                foreach (Student value in students)
+                {
+                    DataRow row = dt.NewRow();
+                    row[0] = value.Id;
+                    row[1] = value.Name;
+                    row[2] = value.Address;
+                    dt.Rows.Add(row);
+                }
+                dataGridView.DataSource = dt;
             }
 
         }

@@ -20,7 +20,10 @@ validate_message={
   "Vehicle_Not_Found":"Vehicle not found",
   "Wrong_Password":"Wrong password"
 }
-
+  # name
+  # Email
+  # Phone number
+  # Ticket Available
 class Response:
   def __init__(self,status,message,vehicle_id,name,gmail,phone_number,ticket_available):
     self.status=status
@@ -103,7 +106,7 @@ def checkTicketAvailable(vehicle_id):
         return Validate(status=True,message="Ticket available")
     return Validate(status=False,message="Ticket unavailable")
 
-class ApiCheckOutWithBot(Resource):
+class ApiCheckInWithBot(Resource):
   def __init__(self,**kwargs):
     self.mail = kwargs['gmail']
     self.app = kwargs['app']
@@ -113,7 +116,6 @@ class ApiCheckOutWithBot(Resource):
     json_demo = json.loads(byte)
     img=bit642NumpyImg(json_demo["base64"])
     date = getTimeStameNow()
-    print("mail is sended")
     session = tf.compat.v1.Session()
     graph = tf.compat.v1.get_default_graph()
     set_session(session)
@@ -123,39 +125,61 @@ class ApiCheckOutWithBot(Resource):
       check_vehicle_id = db.selectTable("SELECT * FROM vehicles WHERE id_vehicles=\'"+vehicle_id+"\'")
       if check_vehicle_id != []:
         _,id_owner = check_vehicle_id[0]
-        gmail=db.selectTable("SELECT gmail FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0][0]
-        result = db.selectTable("SELECT * FROM vehicles_sharing_counter WHERE id_vehicles=\'"+vehicle_id+"\' AND status=0 AND end_date>"+str(getTimeStameNow())+"")
-        _,send_code,_,_ = result[0]
-        message = Message(
-          subject="Bot send mail",
-          sender=self.app.config.get("MAIL_USERNAME"),
-          recipients=[gmail],
-          body="http://127.0.0.1:3000/"+send_code+"&&"+vehicle_id
-        )
-        self.mail.send(message)
-        return Response(
-          status=201,
-          message="Success",
-          name=name,
-          gmail=gmail,
-          phone_number=phone_number,
-          ticket_available=ticket_available,
-          vehicle_id=vehicle_id
-          ).__dict__
+        ticket_available=check_vehicle_ticket_available(vehicle_id)
+        gmail,name,phone_number=db.selectTable("SELECT gmail,name,phone_number FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0][0]
+        if ticket_available:
+          message = Message(
+            subject="Bot send mail",
+            sender=self.app.config.get("MAIL_USERNAME"),
+            recipients=[gmail],
+            body="Your vehicle just checked in, vehicle status: "+str(ticket_available)
+          )
+          self.mail.send(message)
+          db.insertCheckIn(
+          vehicle_id=vehicle_id,
+          key_code="",
+          dates=getTimeStameNow()
+          )
+          return Response(
+            status=201,
+            message="Success",
+            name=name,
+            gmail=gmail,
+            phone_number=phone_number,
+            ticket_available=ticket_available,
+            vehicle_id=vehicle_id
+            ).__dict__
+        else:
+          message = Message(
+            subject="Bot send mail",
+            sender=self.app.config.get("MAIL_USERNAME"),
+            recipients=[gmail],
+            body="Your vehicle just checked in, vehicle status: "+str(ticket_available)
+          )
+          self.mail.send(message)
+          return Response(
+            status=201,
+            message="Success",
+            name=name,
+            gmail=gmail,
+            phone_number=phone_number,
+            ticket_available=ticket_available,
+            vehicle_id=vehicle_id,
+            ).__dict__
       else:
         return Response(
           status=200,
-          message="vehicle not found",
+          message=vehicle_id + " not found, please register !!",
           name="",
           gmail="",
           phone_number="",
           ticket_available="",
-          vehicle_id=""
+          vehicle_id=vehicle_id
           ).__dict__
     except:
       return Response(
-        status=200,
-        message="Server error",
+        status=400,
+        message="Fail",
         name="",
         gmail="",
         phone_number="",

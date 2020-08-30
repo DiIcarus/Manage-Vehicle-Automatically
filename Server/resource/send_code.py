@@ -56,6 +56,13 @@ class SendCode(Resource):
           vehicle_id=vehicle_id,
           send_code=send_code,
         )
+        private_code = db.selectTable("SELECT private_code FROM Owners WHERE id_owners=(SELECT id_owner FROM vehicles WHERE id_vehicles=\'"+vehicle_id+"\')")[0][0]
+        db.insertCheckOut(
+          vehicle_id=vehicle_id,
+          key_code=private_code,
+          share_code=send_code,
+          dates=str(getTimeStameNow())
+        )
         print(db.selectTable(("SELECT * from vehicles_sharing_counter")))
         return Response(status=200,message=validate.message).__dict__
       else:

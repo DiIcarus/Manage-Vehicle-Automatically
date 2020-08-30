@@ -25,7 +25,7 @@ namespace windowsApp
         private void frmSignIn_Load(object sender, EventArgs e)
         {
             Program.frm_sign_in = this;
-            txtGmail.Text = "gmail@gmail.com";
+            txtGmail.Text = "diicarus.8398@gmail.com";
             txtPassword.Text = "123";
         }
         public class ResponseSignIn
@@ -94,7 +94,7 @@ namespace windowsApp
             {
                 Program.access_token = "Bearer "+ this.response.access_token;
                 MessageBox.Show(this.response.message);
-                frmUserManager f = new frmUserManager();
+                frmMain f = new frmMain();
                 f.Show();
                 this.Hide();
                 //this.Close();

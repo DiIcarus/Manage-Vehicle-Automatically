@@ -103,3 +103,8 @@ C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\wi
 C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmUserManager.resources
 C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.exe.licenses
 C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmInsertKey.resources
+C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmMain.resources
+C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmUser.resources
+C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmCheckIn.resources
+C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmCheckOut.resources
+C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmTicket.resources

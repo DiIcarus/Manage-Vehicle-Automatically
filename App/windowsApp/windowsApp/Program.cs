@@ -15,6 +15,7 @@ namespace windowsApp
         /// </summary>
         ///
         public static string access_token = "";
+        public static string vehicle_id = "";
         public static string HOST = "http://127.0.0.1:5000";
         public static string API_SIGN_IN = "/login";
         public static string API_REGISTER_MONTH_TICKET = "/register-ticket";
@@ -30,7 +31,7 @@ namespace windowsApp
             Application.SetCompatibleTextRenderingDefault(false);
 
             BonusSkins.Register();
-            Application.Run(new frmCapture());
+            Application.Run(new frmSignIn());
         }
     }
 }

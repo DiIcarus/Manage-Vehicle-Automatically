@@ -22,9 +22,10 @@ from resource.register_vehicle import ApiRegisterVehicle
 from resource.request_send_code import ApiRequestSendCode
 from resource.send_code import SendCode
 from resource.check_out_type_input import ApiCheckOutTypeInput
-from resource.check_in import ApiCheckInInsertData, ApiCheckInWithBot
+from resource.check_in import ApiCheckInInsertData
 from resource.check_out_with_bot import ApiCheckOutWithBot
-
+from resource.check_in_with_bot import ApiCheckInWithBot
+from resource.user.user import ApiInfoUser
 from lib.detector import detect_character
 from lib.recognition import identify_character
 
@@ -45,27 +46,31 @@ def api_add_resource():
   global api
   global mail
   class HelloWord(Resource):
-    @jwt_required
+    # @jwt_required
     def get(self):
       x = {
-        "name": "John",
+        "name": [
+          "aaa",
+          "sss",
+          "vvv"
+        ],
         "age": 30,
         "city": "New York"
       }
       return x
       # return json2xml.Json2xml(readfromstring('{"Hello":"world"}')).to_xml()
   class SendGmail(Resource):
-    def get(self,email):
-      global mail
-      global app
-      message = Message(
-        subject="",
-        sender=app.config.get("MAIL_USERNAME"),
-        recipients=[email],
-        body="Flask QLNX send mail 1234"
-      )
-      mail.send(message)
-      return "mail is send"
+    def post(self):
+      x = {
+        "name": [
+          "aaa",
+          "sss",
+          "vvv"
+        ],
+        "age": 30,
+        "city": "New York"
+      }
+      return x
   
   class Demo(Resource):
     def post(self):
@@ -113,7 +118,7 @@ def api_add_resource():
   
   # demo
   api.add_resource(HelloWord,'/',)
-  api.add_resource(SendGmail,'/<string:email>')
+  api.add_resource(SendGmail,'/gmail')
   api.add_resource(Demo,'/testme')
   # web app
   api.add_resource(ApiRegister,'/register')
@@ -128,12 +133,18 @@ def api_add_resource():
   # vehicle
   # check in
   api.add_resource(ApiCheckInInsertData,'/check-in-insert-data')
-  api.add_resource(ApiCheckInWithBot,'/check-in-with-bot')
+  api.add_resource(ApiCheckInWithBot,'/check-in-with-bot',
+  resource_class_kwargs={ 'gmail': mail,"app":app })
   #check out
   api.add_resource(ApiCheckOutTypeInput,'/check-out-insert-data')
-  api.add_resource(ApiCheckOutWithBot,'/check-out-with-bot',resource_class_kwargs={ 'gmail': mail,"app":app })
+  api.add_resource(ApiCheckOutWithBot,'/check-out-with-bot',
+  resource_class_kwargs={ 'gmail': mail,"app":app })
   api.add_resource(ApiCheckOutVehicleID,'/check-out-vehicle')
-  #
+  # manager
+  api.add_resource(ApiInfoUser,'/user/users')
+  # api.add_resource(ApiInfoCheckIn,'/user/check-in')
+  # api.add_resource(ApiInfoCheckOut,'/user/check-out')
+  # api.add_resource(ApiVehicle,'/user/vehicle')
   
 def main():
   global app
