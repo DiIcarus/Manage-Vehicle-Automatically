@@ -44,6 +44,7 @@ CLASSES_LABEL = { 1:'0',
         }
 
 def identify_character(image,graph):
+    MODEL = load_model('./Core/model/character-model.h5')
     MODEL._make_predict_function()
     with graph.as_default():
         kernel = np.ones((5,5),np.uint8)

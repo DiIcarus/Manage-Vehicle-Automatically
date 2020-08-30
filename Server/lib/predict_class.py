@@ -40,7 +40,10 @@ class NeuralNetwork:
           im_test = numpy_img
           images,graph = detect_character(im_test)
           result = []
+          print("predict . . .")
           for im in images:
             r,gr = identify_character(im,graph)
             result.append(r)
-          print(result)
+          print("RESULT: ",result)
+          return ''.join(map(str, result))
+          

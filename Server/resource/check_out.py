@@ -22,6 +22,7 @@ def splitTime(time):
     minus:minus,
     second:second
   }
+
 def isDateOnMonth(date):
   current_time = splitTime(datetime.datetime.now())
   ticket_time = splitTime(date)
@@ -91,14 +92,12 @@ class ApiCheckOutVehicleID(Resource):
             "message":check_ticket.message
           }
         }
-# class ApiCheckOutClientSendSMS:
-#   pass
-# class ApiCheckOutBotSendSMS:
-#   pass
+
 class ApiCheckOutBotSendCodeMail(Resource):
-  def __init__(self,app,mail):
-    self.app = app
-    self.mail = mail
+  def __init__(self,**kwargs):
+    self.mail = kwargs['gmail']
+    self.app = kwargs['app']
+
   def get(self):
     vehicle_id = request.form['vehicle_id']
     email = getEmailOwnerFromId(vehicle_id)

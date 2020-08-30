@@ -23,6 +23,7 @@ from resource.request_send_code import ApiRequestSendCode
 from resource.send_code import SendCode
 from resource.check_out_type_input import ApiCheckOutTypeInput
 from resource.check_in import ApiCheckInInsertData, ApiCheckInWithBot
+from resource.check_out_with_bot import ApiCheckOutWithBot
 
 from lib.detector import detect_character
 from lib.recognition import identify_character
@@ -42,7 +43,7 @@ mail_setting = {
 
 def api_add_resource():
   global api
-  
+  global mail
   class HelloWord(Resource):
     @jwt_required
     def get(self):
@@ -109,7 +110,7 @@ def api_add_resource():
 
     def get(self):
       return {"test":"tetss"}
-
+  
   # demo
   api.add_resource(HelloWord,'/',)
   api.add_resource(SendGmail,'/<string:email>')
@@ -129,8 +130,8 @@ def api_add_resource():
   api.add_resource(ApiCheckInInsertData,'/check-in-insert-data')
   api.add_resource(ApiCheckInWithBot,'/check-in-with-bot')
   #check out
-  api.add_resource(ApiCheckOutBotSendCodeMail,'/check-out-with-bot')
   api.add_resource(ApiCheckOutTypeInput,'/check-out-insert-data')
+  api.add_resource(ApiCheckOutWithBot,'/check-out-with-bot',resource_class_kwargs={ 'gmail': mail,"app":app })
   api.add_resource(ApiCheckOutVehicleID,'/check-out-vehicle')
   #
   
@@ -141,12 +142,12 @@ def main():
   app = Flask(__name__)
   CORS(app,resources={r"/*": {"origins": "*"}})
   api = Api(app)
-  api_add_resource()
   app.config.update(mail_setting)
-
-  app.config['JWT_SECRET_KEY'] = 'JWT_SECRET_KEY'
-  jwt = JWTManager(app)
   mail = Mail(app)
+  jwt = JWTManager(app)
+  app.config['JWT_SECRET_KEY'] = 'JWT_SECRET_KEY'
+  api_add_resource()
+
   app.run(port=5000)
   
 if __name__=="__main__":

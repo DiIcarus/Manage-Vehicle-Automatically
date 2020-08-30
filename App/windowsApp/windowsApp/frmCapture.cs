@@ -52,7 +52,7 @@ namespace windowsApp
                 base64 = Base64,
             };
             string json = new JavaScriptSerializer().Serialize(obj);
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:5000/testme");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:5000/check-out-with-bot");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
 
@@ -66,7 +66,7 @@ namespace windowsApp
             {
                 var result = streamReader.ReadToEnd();
             }
-            thPostServer.Abort();
+            //thPostServer.Abort();
         }
         string convertBitmap2Base64(Bitmap bImage)
         {
@@ -125,10 +125,10 @@ namespace windowsApp
 
         private void timerRequest_Tick(object sender, EventArgs e)
         {
-            string str = convertBitmap2Base64(this.img);
+            //string str = convertBitmap2Base64(this.img);
             //postServer(str);
-            thPostServer = new Thread(() => postServer(str));
-            thPostServer.Start();
+            //thPostServer = new Thread(() => postServer(str));
+            //thPostServer.Start();
         }
 
         private void btnInsertKey_Click(object sender, EventArgs e)

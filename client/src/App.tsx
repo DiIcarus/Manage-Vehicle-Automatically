@@ -10,6 +10,7 @@ import Chart from "./components/Chart/Chart";
 import RegisterTicket from "./components/RegisterTicket/RegisterTicket";
 import RegisterVehicle from "./components/RegisterVehicle/RegisterVehicle";
 import SendCodePage from "./components/SendCodePage/SendCodePage";
+import AcceptCode from "./components/AcceptCode/AcceptCode";
 import User from "./components/User/User";
 import { CssBaseline, Grid, Typography } from "@material-ui/core";
 import {
@@ -65,6 +66,9 @@ const App: React.FC = () => {
       <Route exact path="/">
         <SignIn />
       </Route>
+      <Route path="/info/:id">
+        <AcceptCode />
+      </Route>
       <Route path="/register">
         <Register />
       </Route>
@@ -99,4 +103,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

@@ -4,6 +4,13 @@ from helper.db import qlnx as db
 from flask_jwt_extended import jwt_required
 import json
 from helper.utils.time_support import convertString2Timestamp,getTimeStameNow
+from helper.img import bit642NumpyImg
+import tensorflow as tf
+from tensorflow.python.keras.backend import set_session
+from flask_mail import Mail, Message
+from lib.detector import detect_character
+from lib.recognition import identify_character
+from lib.predict_class import NeuralNetwork
 
 validate_message={
   "Length_Empty" : 'Wrong Input length',
@@ -94,70 +101,45 @@ def checkTicketAvailable(vehicle_id):
         return Validate(status=True,message="Ticket available")
     return Validate(status=False,message="Ticket unavailable")
 
-class ApiCheckOutTypeInput(Resource):
-  #receive vehicle id, time_stamp => register tickets
-  @jwt_required
+class ApiCheckOutWithBot(Resource):
+  def __init__(self,**kwargs):
+    self.mail = kwargs['gmail']
+    self.app = kwargs['app']
+  # @jwt_required
   def post(self):
-    try:
-      byte = request.get_data().decode('utf-8')
-      json_demo = json.loads(byte)
-      vehicle_id = json_demo["vehicle_id"]
-      share_code = json_demo["share_code"]
-    except:
-      vehicle_id = request.form['vehicle_id']
-      share_code = request.form['share_code']
+    byte = request.get_data().decode('utf-8')
+    json_demo = json.loads(byte)
+    img=bit642NumpyImg(json_demo["base64"])
     date = getTimeStameNow()
-    validate = validateInput(vehicle_id=vehicle_id,share_code=share_code)
-    if validate.status:
-      validate = validateData(vehicle_id=vehicle_id)
-      if validate.status:
-        validate = checkTicketAvailable(vehicle_id=vehicle_id)
-        if validate.status:
-          validate = checkKey(share_code=share_code,vehicle_id=vehicle_id)
-          if validate.status:
-            key_code = db.selectTable("SELECT private_code FROM owners WHERE id_owners=(SELECT id_owner FROM vehicles WHERE id_vehicles=\'"+vehicle_id+"\')")[0]
-            db.insertCheckOut(
-              vehicle_id=vehicle_id,
-              key_code=key_code,
-              share_code=share_code
-              date=date
-            )
-            return Response(
-                status=201,
-                message=validate.message,
-                end_date_time=date + duration,
-                id_tickets="",
-                id_vehicle=vehicle_id,
-              ).__dict__
-          else:
-            return Response(
-            status=400,
-            message=validate.message,
-            end_date_time=date + duration,
-            id_tickets="",
-            id_vehicle=vehicle_id,
-          ).__dict__
-        else:
-          return Response(
-            status=400,
-            message=validate.message,
-            end_date_time=date + duration,
-            id_tickets="",
-            id_vehicle=vehicle_id,
-          ).__dict__
+    print("mail is sended")
+    session = tf.compat.v1.Session()
+    graph = tf.compat.v1.get_default_graph()
+    set_session(session)
+    ai = NeuralNetwork(session,graph)
+    try:
+      vehicle_id = ai.predict(img)
+      check_vehicle_id = db.selectTable("SELECT * FROM vehicles WHERE id_vehicles=\'"+vehicle_id+"\'")
+      if check_vehicle_id != []:
+        _,id_owner = check_vehicle_id[0]
+        gmail=db.selectTable("SELECT gmail FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0][0]
+        message = Message(
+            subject="Bot send mail",
+            sender=self.app.config.get("MAIL_USERNAME"),
+            recipients=[gmail],
+            body="http://127.0.0.1:3000/"+"share_key"+"&&"+vehicle_id
+          )
+        self.mail.send(message)
+        return{
+          "status":201,
+          "message":vehicle_id
+        }
       else:
-        return Response(
-        status=400,
-        message=validate.message,
-        end_date_time=date + duration,
-        id_tickets="",
-        id_vehicle=vehicle_id,
-        ).__dict__
-    else:
-      return Response(
-        status=400,
-        message=validate.message,
-        end_date_time=date + duration,
-        id_tickets="",
-        id_vehicle=vehicle_id,
-        ).__dict__
+        return{
+          "status":200,
+          "message":vehicle_id
+        }
+    except:
+      return {
+        "asd":"kajsdhf",
+        "asdaaa":123
+      }

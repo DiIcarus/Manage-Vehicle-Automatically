@@ -209,5 +209,5 @@ def detect_lp(model,graph, I, max_dim, lp_threshold):
         Yr = np.squeeze(Yr)
         #print(Yr.shape)
         L, TLp, lp_type, Cor = reconstruct(I, Iresized, Yr, lp_threshold)
-        print(TLp)
+        # print(TLp)
         return L, TLp, lp_type, Cor,graph

@@ -186,5 +186,6 @@ class ApiSignIn(Resource):
 class ApiGetInfoUser(Resource):
   # @jwt_required
   def get(self,id_user):
+    print(id_user)
     #get info owner
     return getInfoUser('c814007c')
