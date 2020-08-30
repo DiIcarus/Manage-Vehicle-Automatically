@@ -71,6 +71,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -95,13 +96,14 @@
             this.checkCheckIn,
             this.checkCheckOut,
             this.barButtonItem9,
-            this.btnStream});
+            this.btnStream,
+            this.barButtonItem1});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 14;
+            this.ribbonControl1.MaxItemId = 15;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.ribbonPage1});
-            this.ribbonControl1.Size = new System.Drawing.Size(831, 141);
+            this.ribbonControl1.Size = new System.Drawing.Size(869, 141);
             // 
             // btnClose
             // 
@@ -255,6 +257,7 @@
             // ribbonPageGroup7
             // 
             this.ribbonPageGroup7.ItemLinks.Add(this.btnStream);
+            this.ribbonPageGroup7.ItemLinks.Add(this.barButtonItem1);
             this.ribbonPageGroup7.Name = "ribbonPageGroup7";
             this.ribbonPageGroup7.Text = "Camera";
             // 
@@ -297,7 +300,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(568, 141);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(263, 258);
+            this.panel1.Size = new System.Drawing.Size(301, 258);
             this.panel1.TabIndex = 2;
             // 
             // txtSharingCounter
@@ -437,11 +440,19 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Detail";
             // 
+            // barButtonItem1
+            // 
+            this.barButtonItem1.Caption = "Insert Key";
+            this.barButtonItem1.Id = 14;
+            this.barButtonItem1.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("barButtonItem1.ImageOptions.SvgImage")));
+            this.barButtonItem1.Name = "barButtonItem1";
+            this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
+            // 
             // frmUserManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(831, 399);
+            this.ClientSize = new System.Drawing.Size(869, 399);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.gridControl);
             this.Controls.Add(this.ribbonControl1);
@@ -502,5 +513,6 @@
         private System.Windows.Forms.TextBox txtPhone;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.TextBox txtVehicleId;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
     }
 }

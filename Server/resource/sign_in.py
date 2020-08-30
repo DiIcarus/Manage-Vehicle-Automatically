@@ -12,6 +12,8 @@ from flask_jwt_extended import (
 import json
 import re
 from datetime import datetime
+from helper.utils.time_support import convertString2Timestamp,getTimeStameNow
+
 
 
 validate_message={
@@ -123,12 +125,57 @@ class ApiSignIn(Resource):
       gmail = request.form['gmail']
       password = request.form['password']
     #
+    info = {
+      "id_user":"",
+      "user_name":"",
+      "vehicle_ids":[],
+      "private_code":"",
+      "public_code":"",
+      "gmail":"",
+      "dob":"",
+      "password":"",
+      "phone_number":"",
+      "id_owner":"",
+    }
+    
+
     validate = validatInput( gmail=gmail, password=password)
     if validate.status:
       validate = validateData(gmail=gmail,password=password)
       if validate.status:
         #
-        access_token = create_access_token(identity = gmail)#id_user
+        info["gmail"] = gmail
+        info["password"]=password
+        id_users,_,phone_number,dob,_,name = db.selectTable("SELECT * FROM USERS WHERE gmail=\'"+gmail+"\'")[0]
+        info["id_user"] = id_users
+        info["phone_number"] = phone_number
+        info["dob"] = dob
+        info["user_name"] = name,
+        id_owner,_,private_code,public_code = db.selectTable("SELECT * FROM owners WHERE user_id=\'"+id_users+"\'")[0]
+        info["private_code"]=private_code
+        info["public_code"] = public_code
+        info["id_owner"] = id_owner
+        result = db.selectTable("SELECT * FROM vehicles WHERE id_owner=\'"+id_owner+"\'")
+        
+        arr = []
+        for r in result:
+          ve_info={
+            "id":"",
+            "ticket_available":"",
+          }
+          id_vehicle,_= r
+          ve_info["id"] = id_vehicle
+          res = db.selectTable("SELECT * FROM tickets WHERE vehicle_id=\'"+id_vehicle+"\'")
+          for re in res:
+            print(re)
+            _,_,date,duration = re
+            if(date+duration >getTimeStameNow()):
+              ve_info["ticket_available"] = "true"
+          if ve_info["ticket_available"] != "true":
+            ve_info["ticket_available"]="false"
+          arr.append(ve_info)
+        info["vehicle_ids"].append(arr)
+        access_token = create_access_token(identity = info)#id_user
         #
         return  ResponseSignIn(status=200,message=validate.message,access_token=access_token).__dict__
       else:

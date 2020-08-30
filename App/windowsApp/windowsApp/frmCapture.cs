@@ -23,6 +23,8 @@ namespace windowsApp
         private FilterInfoCollection cameras;
         private VideoCaptureDevice cam;
         private Bitmap img;
+        private Thread thPostServer;
+        private string typeCheck=""; 
         public frmCapture()
         {
             InitializeComponent();
@@ -64,13 +66,14 @@ namespace windowsApp
             {
                 var result = streamReader.ReadToEnd();
             }
+            thPostServer.Abort();
         }
         string convertBitmap2Base64(Bitmap bImage)
         {
             MemoryStream ms = new MemoryStream();
             bImage.Save(ms, ImageFormat.Jpeg);
             byte[] byteImage = ms.ToArray();
-            var SigBase64 = Convert.ToBase64String(byteImage); // Get Base64
+            var SigBase64 = Convert.ToBase64String(byteImage);
             return SigBase64;
         }
 
@@ -117,20 +120,31 @@ namespace windowsApp
         private void frmCapture_Load(object sender, EventArgs e)
         {
             timer.Start();
-
             txtCurrentTime.Enabled = false;
         }
 
         private void timerRequest_Tick(object sender, EventArgs e)
         {
             string str = convertBitmap2Base64(this.img);
-            postServer(str);
+            //postServer(str);
+            thPostServer = new Thread(() => postServer(str));
+            thPostServer.Start();
         }
 
         private void btnInsertKey_Click(object sender, EventArgs e)
         {
             frmInsertKey f = new frmInsertKey();
             f.Show();
+        }
+
+        private void rdCheckIn_CheckedChanged(object sender, EventArgs e)
+        {
+            typeCheck = "check-in";
+        }
+
+        private void rdCheckOut_CheckedChanged(object sender, EventArgs e)
+        {
+            typeCheck = "check-out";
         }
     }
 }

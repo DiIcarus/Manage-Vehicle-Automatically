@@ -30,7 +30,7 @@ namespace windowsApp
             Application.SetCompatibleTextRenderingDefault(false);
 
             BonusSkins.Register();
-            Application.Run(new frmCapture());
+            Application.Run(new frmInsertKey());
         }
     }
 }

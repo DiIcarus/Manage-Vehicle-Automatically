@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -6,7 +6,6 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
-  Link,
   Grid,
   Box,
   Typography,
@@ -15,8 +14,41 @@ import {
 import { LockOutlined } from "@material-ui/icons";
 import { useStyles } from "./style";
 import { fetchSignIn } from "./../../service/api/sign_in";
+import { useDispatch, useSelector } from "react-redux";
+import { InitState, RootDispatcher } from "./../../store/root-reducer";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
+import User from "./../User/User";
 
+const JWT = require("jwt-client");
+interface GlobalStorage {
+  name: string;
+  token: string;
+}
 export default function SignIn() {
+  //
+  let history = useHistory();
+  let location = useLocation();
+  //state
+  const { name, token } = useSelector<InitState, GlobalStorage>(
+    (state: InitState) => {
+      return {
+        name: state.name,
+        token: state.token,
+      };
+    }
+  );
+  const dispatch = useDispatch();
+  const rootDispatcher = new RootDispatcher(dispatch);
+  // rootDispatcher.updateName()
+  //
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,17 +59,40 @@ export default function SignIn() {
     formData.append("password", password.trim());
     const result = await fetchSignIn(formData);
     console.log(result);
+    rootDispatcher.updateToken("Bearer " + result.data.access_token);
+    if (result.data.access_token) {
+      sessionStorage.setItem(
+        "AccessToken",
+        "Bearer " + result.data.access_token
+      );
+      let session = JWT.read(result.data.access_token);
+      console.log(session.claim.identity);
+      rootDispatcher.updateName(session.claim.identity.user_name);
+      history.replace("/user");
+    }
   };
 
+  useEffect(() => {
+    console.log("abc");
+    sessionStorage.setItem("AccessToken", "");
+  });
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        {/* <Avatar className={classes.avatar}>
-          <LockOutlined />
-        </Avatar> */}
+        <Typography
+          component="h1"
+          variant="h5"
+          style={{
+            textAlign: "center",
+            width: "100%",
+            margin: "1rem",
+          }}
+        >
+          {"QUẢN LÝ NHÀ XE HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG"}
+        </Typography>
         <Typography component="h1" variant="h5">
-          Sign in
+          {"Đăng nhập"}
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -85,14 +140,24 @@ export default function SignIn() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+              <Button
+                variant="text"
+                onClick={() => {
+                  history.push("/forgot-pasword");
+                }}
+              >
+                Bạn quên mật khẩu ?
+              </Button>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
+              <Button
+                variant="text"
+                onClick={() => {
+                  history.push("/register");
+                }}
+              >
+                Bạn muốn đăng ký ?
+              </Button>
             </Grid>
           </Grid>
         </form>

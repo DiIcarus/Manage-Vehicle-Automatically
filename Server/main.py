@@ -18,6 +18,12 @@ from resource.check_out import ApiCheckOutVehicleID, ApiCheckOutBotSendCodeMail,
 from resource.sign_in import ApiSignIn, ApiGetInfoUser
 from resource.register import ApiRegister
 from resource.register_month_ticket import ApiRegisterMonthTicket
+from resource.register_vehicle import ApiRegisterVehicle
+from resource.request_send_code import ApiRequestSendCode
+from resource.send_code import SendCode
+from resource.check_out_type_input import ApiCheckOutTypeInput
+from resource.check_in import ApiCheckInInsertData, ApiCheckInWithBot
+
 from lib.detector import detect_character
 from lib.recognition import identify_character
 
@@ -104,17 +110,29 @@ def api_add_resource():
     def get(self):
       return {"test":"tetss"}
 
+  # demo
   api.add_resource(HelloWord,'/',)
   api.add_resource(SendGmail,'/<string:email>')
   api.add_resource(Demo,'/testme')
-  #demo
+  # web app
   api.add_resource(ApiRegister,'/register')
   api.add_resource(ApiSignIn,'/login')
-  api.add_resource(ApiGetInfoUser,'/info/<string:id_user>')
   api.add_resource(ApiRegisterMonthTicket,'/register-ticket')
+  api.add_resource(ApiRegisterVehicle,"/register-vehicle")
+  #
+  api.add_resource(ApiRequestSendCode,'/request-send-code') # gen send code
+  api.add_resource(SendCode,'/send-code') # owner mail
+  # maybe need
+  api.add_resource(ApiGetInfoUser,'/info/<string:id_user>')
+  # vehicle
+  # check in
+  api.add_resource(ApiCheckInInsertData,'/check-in-insert-data')
+  api.add_resource(ApiCheckInWithBot,'/check-in-with-bot')
+  #check out
+  api.add_resource(ApiCheckOutBotSendCodeMail,'/check-out-with-bot')
+  api.add_resource(ApiCheckOutTypeInput,'/check-out-insert-data')
   api.add_resource(ApiCheckOutVehicleID,'/check-out-vehicle')
-  api.add_resource(ApiCheckOutBotSendCodeMail,'/check-out-bot-send-mail')
-  api.add_resource(ApiCheckoutIncomeKey,'/check-out-by-key')
+  #
   
 def main():
   global app
@@ -133,11 +151,3 @@ def main():
   
 if __name__=="__main__":
   main()
-  # im_test = cv2.imread('./Core/demo/vietnam_car_rectangle_plate.jpg')
-  # # cv2.imshow("test",img)
-  
-  # images = detect_character(im_test)
-  # result = []
-  # for im in images:
-  #   result.append(identify_character(im))
-  # print(result)

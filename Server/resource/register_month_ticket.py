@@ -3,6 +3,7 @@ import datetime
 from helper.db import qlnx as db
 from flask_jwt_extended import jwt_required
 import json
+from helper.utils.time_support import convertString2Timestamp,getTimeStameNow
 
 validate_message={
   "Length_Empty" : 'Wrong Input length',
@@ -26,8 +27,10 @@ class Validate:
     self.status = status
     self.message = message
 
-def validateInput(vehicle_id,time_duration):
-  if len(vehicle_id)<0 or len(time_duration)<0:
+def validateInput(vehicle_id,duration):
+  if duration<0:
+    return Validate(status=False,message=validate_message.get("Length_Empty"))
+  if len(vehicle_id)<0:
     return Validate(status=False,message=validate_message.get("Length_Empty"))
   if len(vehicle_id) >45:
     return Validate(status=False,message=validate_message.get("Length_Long"))
@@ -58,25 +61,27 @@ class ApiRegisterMonthTicket(Resource):
       byte = request.get_data().decode('utf-8')
       json_demo = json.loads(byte)
       vehicle_id = json_demo["vehicle_id"]
-      time_duration = json_demo["time_duration"]
+      duration = json_demo["duration"]
     except:
       vehicle_id = request.form['vehicle_id']
-      time_duration = request.form['time_duration']
+      duration = request.form['duration']
+    duration = int(duration)
     selectChekingData()
-    date = datetime.datetime.now()
-    validate = validateInput(vehicle_id=vehicle_id,time_duration=time_duration)
+    date = getTimeStameNow()
+    validate = validateInput(vehicle_id=vehicle_id,duration=duration)
     if validate.status:
       validate = validateData(vehicle_id=vehicle_id)
       if validate.status:
         db.insertTicket(
           vehicle_id=vehicle_id,
-          date=date
+          date=date,
+          duration=int(duration)
         )
         selectChekingData()
         return Response(
           status=200,
           message=validate.message,
-          end_date_time=time_duration,
+          end_date_time=date + int(duration),
           id_tickets="",
           id_vehicle=vehicle_id,
           ).__dict__
@@ -84,7 +89,7 @@ class ApiRegisterMonthTicket(Resource):
         return Response(
         status=400,
         message=validate.message,
-        end_date_time=time_duration,
+        end_date_time="",
         id_tickets="",
         id_vehicle=vehicle_id,
         ).__dict__
@@ -92,7 +97,7 @@ class ApiRegisterMonthTicket(Resource):
       return Response(
         status=400,
         message=validate.message,
-        end_date_time=time_duration,
+        end_date_time="",
         id_tickets="",
         id_vehicle=vehicle_id,
         ).__dict__

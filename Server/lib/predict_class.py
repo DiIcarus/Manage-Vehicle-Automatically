@@ -39,7 +39,6 @@ class NeuralNetwork:
         with self.session.graph.as_default():
           im_test = numpy_img
           images,graph = detect_character(im_test)
-          print("detect_done")
           result = []
           for im in images:
             r,gr = identify_character(im,graph)

@@ -207,5 +207,11 @@ namespace windowsApp
                 //this.Close();
             }
         }
+
+        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            frmInsertKey f = new frmInsertKey();
+            f.Show();
+        }
     }
 }

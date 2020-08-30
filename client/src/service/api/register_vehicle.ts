@@ -1,19 +1,23 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { config } from "./../../config/api";
-interface ResponseSignIn {
-  status: string;
-  message: string;
-  access_token: string;
-}
+
 const getURL = () => {
   return config.schema + config.host + ":" + config.port;
 };
-export const fetchSignIn = async (formData: FormData) => {
+export const fetchRegisterVehicle = async (
+  formData: FormData,
+  token: string
+) => {
   try {
-    console.log(getURL() + config.end_points.sign_in);
+    console.log(getURL() + config.end_points.register_vehicle);
     const response: any = await axios.post(
-      getURL() + config.end_points.sign_in,
-      formData
+      getURL() + config.end_points.register_vehicle,
+      formData,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
     );
     console.log(response);
     return response;

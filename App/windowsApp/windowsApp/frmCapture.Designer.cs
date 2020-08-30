@@ -30,14 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.btnCapture = new System.Windows.Forms.Button();
-            this.btnInsertKey = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtCurrentTime = new System.Windows.Forms.TextBox();
             this.cbxCamera = new System.Windows.Forms.ComboBox();
+            this.txtCurrentTime = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnInsertKey = new System.Windows.Forms.Button();
+            this.btnCapture = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnStart = new System.Windows.Forms.Button();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.timerRequest = new System.Windows.Forms.Timer(this.components);
             this.pictureBox = new System.Windows.Forms.PictureBox();
@@ -52,13 +52,20 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
+            this.radioGroup1 = new DevExpress.XtraEditors.RadioGroup();
+            this.rdCheckIn = new System.Windows.Forms.RadioButton();
+            this.rdCheckOut = new System.Windows.Forms.RadioButton();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radioGroup1.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.rdCheckOut);
             this.panel1.Controls.Add(this.cbxCamera);
+            this.panel1.Controls.Add(this.rdCheckIn);
+            this.panel1.Controls.Add(this.radioGroup1);
             this.panel1.Controls.Add(this.txtCurrentTime);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
@@ -72,36 +79,38 @@
             this.panel1.Size = new System.Drawing.Size(775, 71);
             this.panel1.TabIndex = 0;
             // 
-            // btnStart
+            // cbxCamera
             // 
-            this.btnStart.Location = new System.Drawing.Point(12, 23);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 0;
-            this.btnStart.Tag = "Start";
-            this.btnStart.Text = "Start";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.cbxCamera.FormattingEnabled = true;
+            this.cbxCamera.Location = new System.Drawing.Point(642, 39);
+            this.cbxCamera.Name = "cbxCamera";
+            this.cbxCamera.Size = new System.Drawing.Size(121, 21);
+            this.cbxCamera.TabIndex = 7;
             // 
-            // btnClose
+            // txtCurrentTime
             // 
-            this.btnClose.Location = new System.Drawing.Point(93, 23);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.txtCurrentTime.Location = new System.Drawing.Point(642, 12);
+            this.txtCurrentTime.Name = "txtCurrentTime";
+            this.txtCurrentTime.Size = new System.Drawing.Size(121, 21);
+            this.txtCurrentTime.TabIndex = 6;
             // 
-            // btnCapture
+            // label2
             // 
-            this.btnCapture.Location = new System.Drawing.Point(174, 23);
-            this.btnCapture.Name = "btnCapture";
-            this.btnCapture.Size = new System.Drawing.Size(75, 23);
-            this.btnCapture.TabIndex = 2;
-            this.btnCapture.Text = "Capture";
-            this.btnCapture.UseVisualStyleBackColor = true;
-            this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(600, 43);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "label2";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(600, 19);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "label1";
             // 
             // btnInsertKey
             // 
@@ -113,38 +122,36 @@
             this.btnInsertKey.UseVisualStyleBackColor = true;
             this.btnInsertKey.Click += new System.EventHandler(this.btnInsertKey_Click);
             // 
-            // label1
+            // btnCapture
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(367, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "label1";
+            this.btnCapture.Location = new System.Drawing.Point(174, 23);
+            this.btnCapture.Name = "btnCapture";
+            this.btnCapture.Size = new System.Drawing.Size(75, 23);
+            this.btnCapture.TabIndex = 2;
+            this.btnCapture.Text = "Capture";
+            this.btnCapture.UseVisualStyleBackColor = true;
+            this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
             // 
-            // label2
+            // btnClose
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(546, 33);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "label2";
+            this.btnClose.Location = new System.Drawing.Point(93, 23);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // txtCurrentTime
+            // btnStart
             // 
-            this.txtCurrentTime.Location = new System.Drawing.Point(409, 25);
-            this.txtCurrentTime.Name = "txtCurrentTime";
-            this.txtCurrentTime.Size = new System.Drawing.Size(100, 21);
-            this.txtCurrentTime.TabIndex = 6;
-            // 
-            // cbxCamera
-            // 
-            this.cbxCamera.FormattingEnabled = true;
-            this.cbxCamera.Location = new System.Drawing.Point(588, 23);
-            this.cbxCamera.Name = "cbxCamera";
-            this.cbxCamera.Size = new System.Drawing.Size(121, 21);
-            this.cbxCamera.TabIndex = 7;
+            this.btnStart.Location = new System.Drawing.Point(12, 23);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(75, 23);
+            this.btnStart.TabIndex = 0;
+            this.btnStart.Tag = "Start";
+            this.btnStart.Text = "Start";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // timer
             // 
@@ -253,6 +260,37 @@
             this.textBox6.Size = new System.Drawing.Size(100, 21);
             this.textBox6.TabIndex = 12;
             // 
+            // radioGroup1
+            // 
+            this.radioGroup1.Location = new System.Drawing.Point(415, 12);
+            this.radioGroup1.Name = "radioGroup1";
+            this.radioGroup1.Size = new System.Drawing.Size(104, 53);
+            this.radioGroup1.TabIndex = 13;
+            // 
+            // rdCheckIn
+            // 
+            this.rdCheckIn.AutoSize = true;
+            this.rdCheckIn.Location = new System.Drawing.Point(428, 19);
+            this.rdCheckIn.Name = "rdCheckIn";
+            this.rdCheckIn.Size = new System.Drawing.Size(67, 17);
+            this.rdCheckIn.TabIndex = 14;
+            this.rdCheckIn.TabStop = true;
+            this.rdCheckIn.Text = "Check In";
+            this.rdCheckIn.UseVisualStyleBackColor = true;
+            this.rdCheckIn.CheckedChanged += new System.EventHandler(this.rdCheckIn_CheckedChanged);
+            // 
+            // rdCheckOut
+            // 
+            this.rdCheckOut.AutoSize = true;
+            this.rdCheckOut.Location = new System.Drawing.Point(428, 41);
+            this.rdCheckOut.Name = "rdCheckOut";
+            this.rdCheckOut.Size = new System.Drawing.Size(75, 17);
+            this.rdCheckOut.TabIndex = 17;
+            this.rdCheckOut.TabStop = true;
+            this.rdCheckOut.Text = "Check Out";
+            this.rdCheckOut.UseVisualStyleBackColor = true;
+            this.rdCheckOut.CheckedChanged += new System.EventHandler(this.rdCheckOut_CheckedChanged);
+            // 
             // frmCapture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -277,6 +315,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.radioGroup1.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -307,5 +346,8 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox6;
+        private DevExpress.XtraEditors.RadioGroup radioGroup1;
+        private System.Windows.Forms.RadioButton rdCheckIn;
+        private System.Windows.Forms.RadioButton rdCheckOut;
     }
 }

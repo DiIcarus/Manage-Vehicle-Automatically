@@ -4,7 +4,7 @@ from uuid import uuid4
 import datetime
 from flask_mail import Mail, Message
 from flask_jwt_extended import jwt_required
-
+from helper.utils.time_support import getTimeStameNow,convertString2Timestamp
 
 def splitTime(time):
   t = str(time).split(" ")
@@ -30,7 +30,7 @@ def isDateOnMonth(date):
   else:
     return False
 
-def check_id_vehicle_exist(id_vehicle):
+def check_id_vehicle_available(id_vehicle):
   data = db.selectTable(
     querystr="SELECT * FROM id_vehicles WHERE vehicle_id="+id_vehicle
   )
@@ -38,6 +38,7 @@ def check_id_vehicle_exist(id_vehicle):
     return {status:False,message:"vehicle not found"}
   else:
     return {status:True, message:"vehicle found"}
+
 def check_vehicle_ticket_available(id_vehicle):
   data = db.selectTable(
     querystr="SELECT * FROM tickets WHERE vehicle_id="+id_vehicle
@@ -60,7 +61,7 @@ class ApiCheckOutVehicleID(Resource):
       Using to detect data(vehicle_id, ticket)
     '''
     vehicle_id = request.form['vehicle_id']
-    check_id_vehicle = check_id_vehicle_exist(vehicle_id)
+    check_id_vehicle = check_id_vehicle_available(vehicle_id)
     if check_id_vehicle.status:
       return {
         "code":201,
@@ -145,10 +146,6 @@ def validateCheckout(private_key,public_key,send_code,own_send_code, vehicle_id,
   #check public_key + send_code
   if len(public_key)!=0 and len(send_code)!=0:
     pass
-
-
-  
-
 
 class ApiCheckoutIncomeKey(Resource):
   # @jwt_required

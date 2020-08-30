@@ -41,7 +41,7 @@ export default function Chart() {
     <React.Fragment>
       <Box className={classes.container}>
         <Typography className={classes.header}>Header</Typography>
-        <ResponsiveContainer width={700} height={250}>
+        <ResponsiveContainer width={500} height={250}>
           <LineChart
             data={data}
             margin={{

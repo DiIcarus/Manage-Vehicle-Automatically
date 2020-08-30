@@ -6,7 +6,7 @@ config = {
   'user': 'root',
   'password': 'Di Icarus',
   'host': '127.0.0.1',
-  'database': 'qlnx',
+  'database': 'qlnx3',
   'raise_on_warnings': True
 }
 
@@ -25,22 +25,26 @@ def connect():
     return None
   
 def select():
-  cnx = connect()
-  if cnx is not None:
-    cursor = cnx.cursor()
+  try:
+    cnx = connect()
+    if cnx is not None:
+      cursor = cnx.cursor()
 
-    query = ("SELECT gmail,name,password FROM users")
+      query = ("SELECT * FROM users")
 
-    cursor.execute(query)
+      cursor.execute(query)
+      myresult = cursor.fetchall()
+      print(myresult)
+      # for (gmail, name, password) in cursor:
+      #   # print("{}, {} was hired on {:%d %b %Y}".format(
+      #   #   name, gmail, password))
+      #   print(name,gmail,password)
 
-    for (gmail, name, password) in cursor:
-      # print("{}, {} was hired on {:%d %b %Y}".format(
-      #   name, gmail, password))
-      print(name,gmail,password)
-
-    cursor.close()
-    cnx.close()
-
+      cursor.close()
+      cnx.close()
+  except:
+    print("error")
+from datetime import datetime
 def insert():
   cnx = connect()
   if cnx is not None:
@@ -60,9 +64,9 @@ def insert():
                   "VALUES (%(id_users)s, %(gmail)s, %(phone_number)s, %(dob)s, %(password)s, %(name)s)")
     data_query = {
       'id_users': 'emp_no1',
-      'gmail': 50000,
-      'phone_number': 'date',
-      'dob': '2020-10-10',
+      'gmail': "asdad",
+      'phone_number': "123124",
+      'dob': 123723,
       'password':'password',
       'name':'name'
     }
@@ -91,7 +95,6 @@ def update():
 
     cursor.close()
     cnx.close()
-# insert()
-select()
-update()
-select()
+insert()
+print(select())
+# print(update())

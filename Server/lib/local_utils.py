@@ -204,7 +204,6 @@ def detect_lp(model,graph, I, max_dim, lp_threshold):
         T = Iresized.copy()
         T = T.reshape((1, T.shape[0], T.shape[1], T.shape[2]))
     
-        print("asdsa")
         # with session.as_default():
         Yr = model.predict(T)
         Yr = np.squeeze(Yr)

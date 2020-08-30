@@ -8,11 +8,11 @@ interface ResponseSignIn {
 const getURL = () => {
   return config.schema + config.host + ":" + config.port;
 };
-export const fetchSignIn = async (formData: FormData) => {
+export const fetchRegister = async (formData: FormData) => {
   try {
-    console.log(getURL() + config.end_points.sign_in);
-    const response: any = await axios.post(
-      getURL() + config.end_points.sign_in,
+    console.log(getURL() + config.end_points.register);
+    const response: AxiosResponse<ResponseSignIn> = await axios.post(
+      getURL() + config.end_points.register,
       formData
     );
     console.log(response);
