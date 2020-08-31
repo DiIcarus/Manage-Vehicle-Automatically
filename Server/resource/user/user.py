@@ -13,6 +13,8 @@ import json
 import re
 from datetime import datetime
 from helper.utils.time_support import convertString2Timestamp,getTimeStameNow
+import uuid
+# def validateInput():
 class UserInfo:
   def __init__(self,id_user,gmail,phone_number,dob,password,name):
     self.id_user=id_user
@@ -26,6 +28,24 @@ class Response:
     self.status=status
     self.message = message
     self.user=user
+class Validate:
+  def __init__(self, status, message):
+    self.status = status
+    self.message = message
+
+def validateInput(dob,password,name):
+  
+  def checkInRange(data,fnum,lnum):
+    if len(data)>fnum and len(data)<lnum:
+      return False
+    else:
+      return True
+
+  if checkInRange(password,0,10):
+    return Validate(status=False,message="password range incorrectly")
+  if checkInRange(name,0,10):
+    return Validate(status=False,message="name range incorrectly")
+  return Validate(status=True,message="no error")
 class ApiInfoUser(Resource):
   @jwt_required
   def get(self):
@@ -40,13 +60,37 @@ class ApiInfoUser(Resource):
       user=users_info
     ).__dict__
   @jwt_required
-  def post(self):
+  def put(self):
     try:
       byte = request.get_data().decode('utf-8')
       json_demo = json.loads(byte)
-      gmail = json_demo["gmail"]
+      id_user = json_demo["id_user"]
       password = json_demo["password"]
+      dob = json_demo['dob']
+      name = json_demo['name']
     except:
-      gmail = request.form['gmail']
+      id_user = request.form["id_user"]
       password = request.form['password']
+      dob = request.form['dob']
+      name = request.form['name']
+    validate = validateInput( dob=dob, password=password, name=name)
+    if validate.status:
+      db.updateUser(
+        id_user=id_user,
+        name=name,
+        dob=dob,
+        password=password
+      )
+      print(db.selectTable(("SELECT * from users")))
+      return Response(status=201,message=validate.message,user=[]).__dict__
+    else:
+      return Response(status=400,message=validate.message,user=[]).__dict__
+  @jwt_required
+  def delete(self):
+    id = request.args.get("id")
+    print(id)
+    db.deleteUser(id)
+    return Response(status=200,message=id+"deleted",user=[]).__dict__
+
+
     

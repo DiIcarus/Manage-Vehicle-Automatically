@@ -38,6 +38,11 @@ def excute(cnx,querystr,  data):
     cursor = cnx.cursor()
     cursor.execute(querystr, data)
     cnx.commit()
+def delete(cnx,querystr):
+  if cnx is not None:
+    cursor = cnx.cursor()
+    cursor.execute(querystr)
+    cnx.commit()
 
 # add_employee = ("INSERT INTO employees "
 #               "(first_name, last_name, hire_date, gender, birth_date) "

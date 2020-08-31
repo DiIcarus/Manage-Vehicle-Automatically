@@ -26,6 +26,10 @@ from resource.check_in import ApiCheckInInsertData
 from resource.check_out_with_bot import ApiCheckOutWithBot
 from resource.check_in_with_bot import ApiCheckInWithBot
 from resource.user.user import ApiInfoUser
+from resource.user.check_in import ApiInfoCheckIn
+from resource.user.check_out import ApiInfoCheckOut
+from resource.user.vehicle import ApiVehicle
+
 from lib.detector import detect_character
 from lib.recognition import identify_character
 
@@ -142,9 +146,9 @@ def api_add_resource():
   api.add_resource(ApiCheckOutVehicleID,'/check-out-vehicle')
   # manager
   api.add_resource(ApiInfoUser,'/user/users')
-  # api.add_resource(ApiInfoCheckIn,'/user/check-in')
-  # api.add_resource(ApiInfoCheckOut,'/user/check-out')
-  # api.add_resource(ApiVehicle,'/user/vehicle')
+  api.add_resource(ApiInfoCheckIn,'/user/check-in')
+  api.add_resource(ApiInfoCheckOut,'/user/check-out')
+  api.add_resource(ApiVehicle,'/user/vehicle')
   
 def main():
   global app

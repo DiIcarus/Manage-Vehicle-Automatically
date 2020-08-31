@@ -6,7 +6,11 @@ def createArrayFromReturnCursor(cursor):
     arr.append(row)
   cursor.close()
   return arr
-
+def deleteTable(querystr=""):
+  cnx=db.connect()
+  result = db.delete(cnx=cnx,querystr=querystr)
+  db.disconnect(cnx)
+  return result
 def selectTable(querystr=""):
   '''
     return array(column1,column2, . . )
@@ -127,7 +131,7 @@ def insertVehicle(id_vehicles="",id_owner=""):
 def insertTicket(vehicle_id="",date="",duration=0):
   querystr = (
     "INSERT INTO tickets"
-    "(vehicle_id, date,duration)"
+    "(vehicle_id, dates,duration)"
     "values(%s,%s,%s)"
   )
   data = (vehicle_id, date,duration)
@@ -152,6 +156,32 @@ def updateSendCode(vehicle_id="",send_code="",status=1):
     data=data
   )
   db.disconnect(cnx)
+def updateUser(id_user="",name="",dob="",password=""):
+  querystr = (
+    "UPDATE Users "
+    "SET dob=%s,password=%s,name=%s"
+    "WHERE id_users=\'"+id_user+"\'"
+  )
+  data = (dob,password,name)
+  cnx = db.connect()
+  db.excute(
+    cnx=cnx,
+    querystr= querystr,
+    data=data
+  )
+  db.disconnect(cnx)
+def deleteUser(id_user=""):
+  vehicle_id = selectTable("SELECT id_vehicles FROM vehicles WHERE id_owner=(SELECT id_owners FROM owners WHERE user_id=\'"+id_user+"\')")
+  print(vehicle_id)
+  for v in vehicle_id:
+    deleteTable("DELETE FROM tickets WHERE vehicle_id=\'"+v[0]+"\'")
+    deleteTable("DELETE FROM `check-in` WHERE vehicle_id=\'"+v[0]+"\'")
+    deleteTable("DELETE FROM `check-out` WHERE vehicle_id=\'"+v[0]+"\'")
+    deleteTable("DELETE FROM vehicles_sharing_counter WHERE id_vehicles=\'"+v[0]+"\'")
+    deleteTable("DELETE FROM vehicles WHERE id_vehicles=\'"+v[0]+"\'")
+  deleteTable("DELETE FROM owners WHERE user_id=\'"+id_user+"\'")
+  deleteTable("DELETE FROM users WHERE id_users=\'"+id_user+"\'")
+
 def Register(dob,name,gmail,phone_number,password):
   id_users = str(uuid4()).split('-')[0]
   id_owners = str(uuid4()).split('-')[0]

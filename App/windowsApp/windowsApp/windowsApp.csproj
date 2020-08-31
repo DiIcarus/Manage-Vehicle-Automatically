@@ -112,17 +112,17 @@
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmRegisterTicket.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRegisterTicket.Designer.cs">
+      <DependentUpon>frmRegisterTicket.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmSignIn.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSignIn.Designer.cs">
       <DependentUpon>frmSignIn.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmTicket.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmTicket.Designer.cs">
-      <DependentUpon>frmTicket.cs</DependentUpon>
     </Compile>
     <Compile Include="frmUser.cs">
       <SubType>Form</SubType>
@@ -165,17 +165,20 @@
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmRegisterTicket.resx">
+      <DependentUpon>frmRegisterTicket.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmSignIn.resx">
       <DependentUpon>frmSignIn.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmTicket.resx">
-      <DependentUpon>frmTicket.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUser.resx">
       <DependentUpon>frmUser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUserManager.resx">
       <DependentUpon>frmUserManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVehicle.resx">
+      <DependentUpon>frmVehicle.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">

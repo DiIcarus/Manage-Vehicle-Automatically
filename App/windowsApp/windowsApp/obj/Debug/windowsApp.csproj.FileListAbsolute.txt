@@ -107,4 +107,5 @@ C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\wi
 C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmUser.resources
 C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmCheckIn.resources
 C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmCheckOut.resources
-C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmTicket.resources
+C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmVehicle.resources
+C:\Users\HSONNL\Desktop\myProject\Manage-Vehicle-Automatically\App\windowsApp\windowsApp\obj\Debug\windowsApp.frmRegisterTicket.resources

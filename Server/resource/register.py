@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required
 from helper.utils.time_support import convertString2Timestamp
 class Response:
   def __init__(self,status,message):
-    self.status = status,
+    self.status = status
     self.message = message
 
 class Validate:
@@ -51,11 +51,21 @@ def validateInput(gmail,phone_number,dob,password,name):
 
 class ApiRegister(Resource):
   def post(self):
-    gmail = request.form['gmail']
-    phone_number = request.form['phone_number']
-    dob = request.form['dob']
-    password = request.form['password']
-    name = request.form['name']
+    try:
+      byte = request.get_data().decode('utf-8')
+      json_demo = json.loads(byte)
+      gmail = json_demo["gmail"]
+      password = json_demo["password"]
+      phone_number = json_demo['phone_number']
+      dob = json_demo['dob']
+      name = json_demo['name']
+    except:
+      gmail = request.form['gmail']
+      password = request.form['password']
+      phone_number = request.form['phone_number']
+      dob = request.form['dob']
+      name = request.form['name']
+    
     validate = validateInput( gmail=gmail, phone_number=phone_number, dob=dob, password=password, name=name)
     if validate.status:
       validate = validateData(gmail=gmail,phone_number=phone_number)

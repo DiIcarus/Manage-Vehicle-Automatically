@@ -7,7 +7,7 @@ from flask_jwt_extended import jwt_required
 from helper.utils.time_support import convertString2Timestamp
 class Response:
   def __init__(self,status,message):
-    self.status = status,
+    self.status = status
     self.message = message
 
 class Validate:
@@ -47,8 +47,14 @@ def validateInput(vehicle_id,user_id):
 class ApiRegisterVehicle(Resource):
   @jwt_required
   def post(self):
-    vehicle_id = request.form['vehicle_id']
-    user_id = request.form['user_ids']
+    try:
+      byte = request.get_data().decode('utf-8')
+      json_demo = json.loads(byte)
+      vehicle_id = json_demo["vehicle_id"]
+      user_id = json_demo["user_ids"]
+    except:
+      vehicle_id = request.form['vehicle_id']
+      user_id = request.form['user_ids']
     validate = validateInput( vehicle_id=vehicle_id, user_id=user_id)
     if validate.status:
       validate = validateData(vehicle_id=vehicle_id,user_id=user_id)

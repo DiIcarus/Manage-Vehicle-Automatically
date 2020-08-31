@@ -33,6 +33,7 @@ namespace windowsApp
             public int status;
             public string message;
             public string access_token;
+            public bool is_admin;
         }
         private ResponseSignIn response;
         public class PostServer
@@ -92,12 +93,20 @@ namespace windowsApp
             }
             else if (this.response.status ==200)
             {
-                Program.access_token = "Bearer "+ this.response.access_token;
-                MessageBox.Show(this.response.message);
-                frmMain f = new frmMain();
-                f.Show();
-                this.Hide();
-                //this.Close();
+                if (response.is_admin)
+                {
+
+                    Program.access_token = "Bearer "+ this.response.access_token;
+                    MessageBox.Show(this.response.message);
+                    frmMain f = new frmMain();
+                    f.Show();
+                    this.Hide();
+                }
+                else
+                {
+                    MessageBox.Show("Your account is not admin, Permission denied");
+                    return;
+                }
             }
         }
 

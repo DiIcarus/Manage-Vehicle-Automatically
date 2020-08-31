@@ -20,7 +20,7 @@ validate_message={
   "Length_Empty" : 'Wrong Input length',
   "Mail_Input_Format_Wrong" : 'Gmail input format wrong',
   "Length_Long" : "Input length so long",
-  "Success":"No error",
+  "Success":"Sign In Successful",
   "Gmail_Not_Found":"Gmail not found",
   "Wrong_Password":"Wrong password"
 }
@@ -30,10 +30,12 @@ class Validate:
     self.status = status
     self.message = message
 class ResponseSignIn:
-  def __init__(self,status,message,access_token):
+  def __init__(self,status,message,access_token,is_admin):
     self.status = status
     self.message = message
     self.access_token = access_token
+    self.is_admin=is_admin
+
 
 class ResponceGetInFo:
   def __init__(
@@ -136,6 +138,7 @@ class ApiSignIn(Resource):
       "password":"",
       "phone_number":"",
       "id_owner":"",
+      "is_admin":False
     }
     
 
@@ -152,6 +155,11 @@ class ApiSignIn(Resource):
         info["dob"] = dob
         info["user_name"] = name,
         id_owner,_,private_code,public_code = db.selectTable("SELECT * FROM owners WHERE user_id=\'"+id_users+"\'")[0]
+        result = db.selectTable("SELECT * FROM admins WHERE users_id=\'"+id_users+"\'")
+        if result==[]:
+          info["is_admin"] = False
+        else:
+          info["is_admin"] = True
         info["private_code"]=private_code
         info["public_code"] = public_code
         info["id_owner"] = id_owner
@@ -177,11 +185,11 @@ class ApiSignIn(Resource):
         info["vehicle_ids"].append(arr)
         access_token = create_access_token(identity = info)#id_user
         #
-        return  ResponseSignIn(status=200,message=validate.message,access_token=access_token).__dict__
+        return  ResponseSignIn(status=200,message=validate.message,access_token=access_token,is_admin=info["is_admin"]).__dict__
       else:
-        return  ResponseSignIn(status=400,message=validate.message,access_token="").__dict__
+        return  ResponseSignIn(status=400,message=validate.message,access_token="",is_admin=False).__dict__
     else:
-      return  ResponseSignIn(status=400,message=validate.message,access_token="").__dict__
+      return  ResponseSignIn(status=400,message=validate.message,access_token="",is_admin=False).__dict__
 
 class ApiGetInfoUser(Resource):
   # @jwt_required

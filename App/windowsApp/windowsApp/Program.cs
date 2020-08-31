@@ -24,6 +24,7 @@ namespace windowsApp
         public static int DURATION_TIME_REGISTER = 1000*60*60*24;
         public static bool Capture_response = false;
         public static frmSignIn frm_sign_in;
+        public static bool is_admin = false;
         [STAThread]
         static void Main()
         {

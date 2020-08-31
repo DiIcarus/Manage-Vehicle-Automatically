@@ -96,22 +96,6 @@ namespace windowsApp
             }
         }
 
-        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            form = this.CheckExists(typeof(frmTicket));
-            if (form == null)
-            {
-                frmTicket f = new frmTicket();
-                //f.Text = "Nhap de";
-                f.MdiParent = this;
-                f.Show();
-            }
-            else
-            {
-                form.Activate();
-            }
-        }
-
         private void btnCamera_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             frmCapture f = new frmCapture();
