@@ -61,10 +61,7 @@ export default function SignIn() {
     console.log(result);
     rootDispatcher.updateToken("Bearer " + result.data.access_token);
     if (result.data.access_token) {
-      sessionStorage.setItem(
-        "AccessToken",
-        "Bearer " + result.data.access_token
-      );
+      sessionStorage.setItem("AccessToken", result.data.access_token);
       let session = JWT.read(result.data.access_token);
       console.log(session.claim.identity);
       rootDispatcher.updateName(session.claim.identity.user_name);
@@ -72,10 +69,7 @@ export default function SignIn() {
     }
   };
 
-  useEffect(() => {
-    console.log("abc");
-    sessionStorage.setItem("AccessToken", "");
-  });
+  useEffect(() => {});
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -85,11 +79,12 @@ export default function SignIn() {
           variant="h5"
           style={{
             textAlign: "center",
-            width: "100%",
+            width: "800px",
             margin: "1rem",
+            fontWeight: "bold",
           }}
         >
-          {"QUẢN LÝ NHÀ XE HỌC VIỆN CÔNG NGHỆ BƯU CHÍNH VIỄN THÔNG"}
+          {"QUẢN LÝ NHÀ XE (Web user quản lý thông tin)"}
         </Typography>
         <Typography component="h1" variant="h5">
           {"Đăng nhập"}

@@ -62,8 +62,11 @@ export default function RegisterTicket() {
     pro
       .then((res: any) => {
         console.log(res);
+        alert(res.data.message);
+        history.push("/user");
       })
       .catch((err: any) => {
+        alert("Error:" + err.response.data.message);
         console.log(err);
       });
   };

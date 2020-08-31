@@ -12,6 +12,7 @@ import RegisterVehicle from "./components/RegisterVehicle/RegisterVehicle";
 import SendCodePage from "./components/SendCodePage/SendCodePage";
 import AcceptCode from "./components/AcceptCode/AcceptCode";
 import User from "./components/User/User";
+import Dashboard from "./components/Template/Dashboard";
 import { CssBaseline, Grid, Typography } from "@material-ui/core";
 import {
   BrowserRouter as Router,
@@ -82,20 +83,14 @@ const App: React.FC = () => {
         <RegisterTicket />
       </PrivateRoute>
       <PrivateRoute path="/user">
-        <User />
+        <Dashboard />
       </PrivateRoute>
     </Switch>
   );
   return (
     <React.Fragment>
       <Router>
-        <div
-          style={{
-            paddingTop: 50,
-          }}
-        >
-          {renderRouter()}
-        </div>
+        {renderRouter()}
         <CssBaseline />
       </Router>
     </React.Fragment>

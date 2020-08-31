@@ -153,7 +153,7 @@ class ApiSignIn(Resource):
         info["id_user"] = id_users
         info["phone_number"] = phone_number
         info["dob"] = dob
-        info["user_name"] = name,
+        info["user_name"] = name
         id_owner,_,private_code,public_code = db.selectTable("SELECT * FROM owners WHERE user_id=\'"+id_users+"\'")[0]
         result = db.selectTable("SELECT * FROM admins WHERE users_id=\'"+id_users+"\'")
         if result==[]:

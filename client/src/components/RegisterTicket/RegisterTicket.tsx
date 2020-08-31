@@ -54,9 +54,14 @@ export default function RegisterTicket() {
     formData.append("vehicle_id", vehicle_id);
     formData.append("duration", duration);
     const pro = fetchRegisterTicket(formData, token);
-    pro.then((res: any) => {
-      alert(res.data.message);
-    });
+    pro
+      .then((res: any) => {
+        alert(res.data.message);
+        history.push("/user");
+      })
+      .catch((err: any) => {
+        alert(err.response.data.message);
+      });
   };
   return (
     <Container component="main" maxWidth="xs">
