@@ -17,6 +17,7 @@ namespace windowsApp
     public partial class frmInsertKey : DevExpress.XtraEditors.XtraForm
     {
         private string type;
+        public string vehicle_id;
         public frmInsertKey()
         {
             InitializeComponent();
@@ -38,6 +39,7 @@ namespace windowsApp
             {
                 var result = streamReader.ReadToEnd();
                 MessageBox.Show(result);
+                MessageBox.Show("Vehicle Passs");
             }
         }
         private void postServerCheckOut(RequestCheckOut obj)
@@ -57,6 +59,7 @@ namespace windowsApp
             {
                 var result = streamReader.ReadToEnd();
                 MessageBox.Show(result);
+                MessageBox.Show("Vehicle Passs");
             }
         }
         private void postServerGenKey(RequestGenKey obj)
@@ -94,8 +97,7 @@ namespace windowsApp
 
         private void btnGenKey_Click(object sender, EventArgs e)
         {
-            //Call api gen share code.
-            postServerGenKey(new RequestGenKey { vehicle_id = "122334" });
+            postServerGenKey(new RequestGenKey { vehicle_id = vehicle_id });
         }
 
         private void btnSummit_Click(object sender, EventArgs e)
@@ -104,22 +106,26 @@ namespace windowsApp
             {
                 case "check-in":
                     postServerCheckIn(new RequestCheckIn { 
-                        vehicle_id="122334",
-                        password="12233",
-                        phone_number="212343",
-                        gmail="s3o2n@gmail.com"
+                        vehicle_id=vehicle_id,
+                        phone_number="",
+                        password=txtShareCode.Text.Trim(),
+                        gmail=txtKeyCode.Text.Trim()
                     });
                     break;
                 case "check-out":
                     postServerCheckOut(new RequestCheckOut
                     {
-                        vehicle_id = "122334",
-                        key_code= "212343",
-                        //share_code="12233",
-                        share_code= "335fae0e-4216-4a06-82f0-418efd6137d0",
+                        vehicle_id = vehicle_id,
+                        key_code= txtKeyCode.Text.Trim(),
+                        share_code= txtShareCode.Text.Trim(),
                     });
                     break;
             }
+        }
+
+        private void frmInsertKey_Load(object sender, EventArgs e)
+        {
+
         }
     }
     public class RequestCheckIn
@@ -148,5 +154,11 @@ namespace windowsApp
     public class RequestGenKey
     {
         public string vehicle_id;
+    }
+    public class ResponseRequestSendCode
+    {
+        public int status;
+        public string message;
+        public string share_key;
     }
 }

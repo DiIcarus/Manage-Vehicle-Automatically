@@ -11,6 +11,7 @@ from flask_mail import Mail, Message
 from lib.detector import detect_character
 from lib.recognition import identify_character
 from lib.predict_class import NeuralNetwork
+from uuid import uuid4
 
 validate_message={
   "Length_Empty" : 'Wrong Input length',
@@ -120,31 +121,52 @@ class ApiCheckOutWithBot(Resource):
     ai = NeuralNetwork(session,graph)
     try:
       vehicle_id = ai.predict(img)
+      vehicle_id = "1111"
       check_vehicle_id = db.selectTable("SELECT * FROM vehicles WHERE id_vehicles=\'"+vehicle_id+"\'")
       if check_vehicle_id != []:
+        # ticket_available=checkTicketAvailable(vehicle_id)
+        print("1")
         _,id_owner = check_vehicle_id[0]
         gmail=db.selectTable("SELECT gmail FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0][0]
-        result = db.selectTable("SELECT * FROM vehicles_sharing_counter WHERE id_vehicles=\'"+vehicle_id+"\' AND status=0 AND end_date>"+str(getTimeStameNow())+"")
-        _,send_code,_,_ = result[0]
-        message = Message(
-          subject="Bot send mail",
-          sender=self.app.config.get("MAIL_USERNAME"),
-          recipients=[gmail],
-          body="http://127.0.0.1:3000/"+send_code+"&&"+vehicle_id
-        )
-        self.mail.send(message)
-        return Response(
-          status=201,
-          message="Success",
-          name=name,
-          gmail=gmail,
-          phone_number=phone_number,
-          ticket_available=ticket_available,
-          vehicle_id=vehicle_id
-          ).__dict__
+        print("2")
+        send_code = str(uuid4()).split('-')[0]
+        db.insertSharingCounter(send_code=send_code,owner_id=id_owner, name="")
+        print("3")
+        db.insertVehiclesSharingCounter(id_vehicles=vehicle_id, send_code=send_code,end_date=0,status=0)
+        result = db.selectTable("SELECT * FROM vehicles_sharing_counter WHERE id_vehicles=\'"+vehicle_id+"\' AND status=0 ")
+        print(gmail)
+        if True:
+          # _,send_code,_,_ = result[0]
+          message = Message(
+            subject="Bot send mail",
+            sender=self.app.config.get("MAIL_USERNAME"),
+            recipients=[gmail],
+            body="http://127.0.0.1:3000/"+send_code+"&&"+vehicle_id
+          )
+          self.mail.send(message)
+          print("4")
+          return Response(
+            status=201,
+            message="Success",
+            name=name,
+            gmail=gmail,
+            phone_number=phone_number,
+            ticket_available=ticket_available,
+            vehicle_id=vehicle_id
+            ).__dict__
+        else:
+          return Response(
+            status=20,
+            message="Fail",
+            name=name,
+            gmail=gmail,
+            phone_number=phone_number,
+            ticket_available=ticket_available,
+            vehicle_id=vehicle_id
+            ).__dict__
       else:
         return Response(
-          status=200,
+          status=202,
           message="vehicle not found",
           name="",
           gmail="",
@@ -154,7 +176,7 @@ class ApiCheckOutWithBot(Resource):
           ).__dict__
     except:
       return Response(
-        status=200,
+        status=400,
         message="Server error",
         name="",
         gmail="",

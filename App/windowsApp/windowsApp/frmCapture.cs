@@ -168,6 +168,21 @@ namespace windowsApp
                     txtEmail.Text = res_check_in.gmail;
                     txtTicketAvailable.Text = res_check_in.ticket_available;
                     txtPhoneNumber.Text = res_check_in.phone_number;
+                    if (this.res_check_in.status == 200)
+                    {
+                        MessageBox.Show("Vehicle" + res_check_in.vehicle_id + "not found,please type input!!");
+                        frmInsertKey f = new frmInsertKey();
+                        f.vehicle_id = res_check_in.vehicle_id;
+                        f.Show();
+                    }
+                    if(res_check_in.status == 201)
+                    {
+                        MessageBox.Show("Success," +res_check_in.vehicle_id);
+                    }
+                    if (res_check_in.status == 400)
+                    {
+                        MessageBox.Show("Fail !!");
+                    }
                     break;
                 case "check-out":
                     this.res_check_out = postServerCheckOut(str);
@@ -177,6 +192,21 @@ namespace windowsApp
                     txtEmail.Text = res_check_out.gmail;
                     txtTicketAvailable.Text = res_check_out.ticket_available;
                     txtPhoneNumber.Text = res_check_out.phone_number;
+                    if (this.res_check_out.status == 200)
+                    {
+                        MessageBox.Show("Vehicle" + res_check_out.vehicle_id + "not found,please type input!!");
+                        frmInsertKey f = new frmInsertKey();
+                        f.vehicle_id = res_check_out.vehicle_id;
+                        f.Show();
+                    }
+                    if (res_check_out.status == 201)
+                    {
+                        MessageBox.Show("Success," + res_check_out.vehicle_id);
+                    }
+                    if (res_check_out.status == 400)
+                    {
+                        MessageBox.Show("Fail !!");
+                    }
                     break;
             }
         }

@@ -101,10 +101,10 @@ def insertSharingCounter(send_code="",owner_id="", name=""):
 def insertVehiclesSharingCounter(id_vehicles="", send_code="",end_date=0,status=0):
   querystr = (
     "INSERT INTO vehicles_sharing_counter"
-    "(id_vehicles, send_code,end_date,status)"
+    "(id_vehicles, send_code,status,end_date)"
     "values(%s,%s,%s,%s)"
   )
-  data = (id_vehicles,send_code,end_date,status )
+  data = (id_vehicles,send_code,status,end_date)
   cnx = db.connect()
   db.excute(
     cnx=cnx,

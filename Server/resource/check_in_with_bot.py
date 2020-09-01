@@ -122,17 +122,19 @@ class ApiCheckInWithBot(Resource):
     ai = NeuralNetwork(session,graph)
     try:
       vehicle_id = ai.predict(img)
+      vehicle_id = "72222"
       check_vehicle_id = db.selectTable("SELECT * FROM vehicles WHERE id_vehicles=\'"+vehicle_id+"\'")
       if check_vehicle_id != []:
         _,id_owner = check_vehicle_id[0]
-        ticket_available=check_vehicle_ticket_available(vehicle_id)
-        gmail,name,phone_number=db.selectTable("SELECT gmail,name,phone_number FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0][0]
-        if ticket_available:
+        print(id_owner)
+        ticket_available=checkTicketAvailable(vehicle_id)
+        gmail,name,phone_number=db.selectTable("SELECT gmail,name,phone_number FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0]
+        if ticket_available.status:
           message = Message(
             subject="Bot send mail",
             sender=self.app.config.get("MAIL_USERNAME"),
             recipients=[gmail],
-            body="Your vehicle just checked in, vehicle status: "+str(ticket_available)
+            body="Your vehicle just checked in, vehicle status: "
           )
           self.mail.send(message)
           db.insertCheckIn(
@@ -146,7 +148,7 @@ class ApiCheckInWithBot(Resource):
             name=name,
             gmail=gmail,
             phone_number=phone_number,
-            ticket_available=ticket_available,
+            ticket_available='true',
             vehicle_id=vehicle_id
             ).__dict__
         else:
@@ -154,16 +156,16 @@ class ApiCheckInWithBot(Resource):
             subject="Bot send mail",
             sender=self.app.config.get("MAIL_USERNAME"),
             recipients=[gmail],
-            body="Your vehicle just checked in, vehicle status: "+str(ticket_available)
+            body="Your vehicle just checked in, vehicle status: "
           )
           self.mail.send(message)
           return Response(
-            status=201,
-            message="Success",
+            status=202,
+            message="Please buy tickets",
             name=name,
             gmail=gmail,
             phone_number=phone_number,
-            ticket_available=ticket_available,
+            ticket_available="false",
             vehicle_id=vehicle_id,
             ).__dict__
       else:
