@@ -37,7 +37,6 @@
             this.btnCheckIn = new DevExpress.XtraBars.BarButtonItem();
             this.btnCheckOut = new DevExpress.XtraBars.BarButtonItem();
             this.btnCamera = new DevExpress.XtraBars.BarButtonItem();
-            this.btnInsertKey = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -59,8 +58,7 @@
             this.btnVehicle,
             this.btnCheckIn,
             this.btnCheckOut,
-            this.btnCamera,
-            this.btnInsertKey});
+            this.btnCamera});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
             this.ribbonControl1.MaxItemId = 10;
             this.ribbonControl1.Name = "ribbonControl1";
@@ -116,14 +114,6 @@
             this.btnCamera.Name = "btnCamera";
             this.btnCamera.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnCamera_ItemClick);
             // 
-            // btnInsertKey
-            // 
-            this.btnInsertKey.Caption = "Insert Key";
-            this.btnInsertKey.Id = 9;
-            this.btnInsertKey.ImageOptions.SvgImage = ((DevExpress.Utils.Svg.SvgImage)(resources.GetObject("btnInsertKey.ImageOptions.SvgImage")));
-            this.btnInsertKey.Name = "btnInsertKey";
-            this.btnInsertKey.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.btnInsertKey_ItemClick);
-            // 
             // ribbonPage1
             // 
             this.ribbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
@@ -157,7 +147,6 @@
             // ribbonPageGroup5
             // 
             this.ribbonPageGroup5.ItemLinks.Add(this.btnCamera);
-            this.ribbonPageGroup5.ItemLinks.Add(this.btnInsertKey);
             this.ribbonPageGroup5.Name = "ribbonPageGroup5";
             this.ribbonPageGroup5.Text = "ribbonPageGroup5";
             // 
@@ -199,6 +188,5 @@
         private DevExpress.XtraTabbedMdi.XtraTabbedMdiManager xtraTabbedMdiManager1;
         private DevExpress.XtraBars.BarButtonItem btnCamera;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup5;
-        private DevExpress.XtraBars.BarButtonItem btnInsertKey;
     }
 }

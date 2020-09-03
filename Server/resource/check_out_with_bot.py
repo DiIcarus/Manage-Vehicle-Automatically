@@ -124,44 +124,45 @@ class ApiCheckOutWithBot(Resource):
       vehicle_id = "1111"
       check_vehicle_id = db.selectTable("SELECT * FROM vehicles WHERE id_vehicles=\'"+vehicle_id+"\'")
       if check_vehicle_id != []:
-        # ticket_available=checkTicketAvailable(vehicle_id)
-        print("1")
+        ticket_available=checkTicketAvailable(vehicle_id)
+        print("CHECK",ticket_available.status)
         _,id_owner = check_vehicle_id[0]
-        gmail=db.selectTable("SELECT gmail FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0][0]
-        print("2")
+        name,gmail,phone_number=db.selectTable("SELECT name,gmail,phone_number FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0]
+        print("CHECK",gmail,phone_number)
         send_code = str(uuid4()).split('-')[0]
         db.insertSharingCounter(send_code=send_code,owner_id=id_owner, name="")
-        print("3")
-        db.insertVehiclesSharingCounter(id_vehicles=vehicle_id, send_code=send_code,end_date=0,status=0)
+        db.insertVehiclesSharingCounter(id_vehicles=vehicle_id, send_code=send_code,end_date=getTimeStameNow()+300000,status=0)
         result = db.selectTable("SELECT * FROM vehicles_sharing_counter WHERE id_vehicles=\'"+vehicle_id+"\' AND status=0 ")
         print(gmail)
         if True:
-          # _,send_code,_,_ = result[0]
+          _,send_code,_,_ = result[0]
           message = Message(
             subject="Bot send mail",
             sender=self.app.config.get("MAIL_USERNAME"),
-            recipients=[gmail],
-            body="http://127.0.0.1:3000/"+send_code+"&&"+vehicle_id
+            recipients=[gmail,"diicarus.8398@gmail.com"],
+            body="http://127.0.0.1:3000/info/"+send_code+"&&"+vehicle_id
           )
           self.mail.send(message)
           print("4")
-          return Response(
+          res = Response(
             status=201,
             message="Success",
             name=name,
             gmail=gmail,
             phone_number=phone_number,
-            ticket_available=ticket_available,
+            ticket_available=ticket_available.status,
             vehicle_id=vehicle_id
             ).__dict__
+          print(res)
+          return res
         else:
           return Response(
-            status=20,
+            status=200,
             message="Fail",
             name=name,
             gmail=gmail,
             phone_number=phone_number,
-            ticket_available=ticket_available,
+            ticket_available=ticket_available.status,
             vehicle_id=vehicle_id
             ).__dict__
       else:

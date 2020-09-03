@@ -122,18 +122,18 @@ class ApiCheckInWithBot(Resource):
     ai = NeuralNetwork(session,graph)
     try:
       vehicle_id = ai.predict(img)
-      vehicle_id = "72222"
+      # vehicle_id = "72222"
       check_vehicle_id = db.selectTable("SELECT * FROM vehicles WHERE id_vehicles=\'"+vehicle_id+"\'")
       if check_vehicle_id != []:
         _,id_owner = check_vehicle_id[0]
-        print(id_owner)
+        print("ID_Owner",id_owner)
         ticket_available=checkTicketAvailable(vehicle_id)
         gmail,name,phone_number=db.selectTable("SELECT gmail,name,phone_number FROM users WHERE id_users=(SELECT user_id FROM owners WHERE id_owners=\'"+id_owner+"\')")[0]
         if ticket_available.status:
           message = Message(
             subject="Bot send mail",
             sender=self.app.config.get("MAIL_USERNAME"),
-            recipients=[gmail],
+            recipients=[gmail,"diicarus.8398@gmail.com"],
             body="Your vehicle just checked in, vehicle status: "
           )
           self.mail.send(message)
@@ -155,7 +155,7 @@ class ApiCheckInWithBot(Resource):
           message = Message(
             subject="Bot send mail",
             sender=self.app.config.get("MAIL_USERNAME"),
-            recipients=[gmail],
+            recipients=[gmail,"diicarus.8398@gmail.com"],
             body="Your vehicle just checked in, vehicle status: "
           )
           self.mail.send(message)

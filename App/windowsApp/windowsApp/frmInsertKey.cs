@@ -107,8 +107,8 @@ namespace windowsApp
                 case "check-in":
                     postServerCheckIn(new RequestCheckIn { 
                         vehicle_id=vehicle_id,
-                        phone_number="",
-                        password=txtShareCode.Text.Trim(),
+                        phone_number= new Random().Next(100,1000).ToString(),
+                        password =txtShareCode.Text.Trim(),
                         gmail=txtKeyCode.Text.Trim()
                     });
                     break;
